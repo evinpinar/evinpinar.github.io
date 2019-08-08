@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ACM International Collegiate Programming Contest
-categories: Medium
+categories: [Medium]
 ---
 
 I have recently moved to Munich and started my masters degree after finishing the bachelors. It is my first semester yet, and I want to talk about my first impressions of Munich and the TU.

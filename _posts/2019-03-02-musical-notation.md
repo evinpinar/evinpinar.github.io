@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Towards a New Musical Notation
-categories: music, ai
+categories: [music, AI]
 ---
 
 Think about a cello performance, of Yo-Yo-Ma playing Bach Suite 3, Gigue. Now think of Rostropovich. They actually play very differently which can be understood by an average classical music listener.
