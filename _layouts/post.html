@@ -35,5 +35,8 @@ layout: default
     Written on {{ page.date | date: "%B %e, %Y" }}
   </div>-->
 
-  {% include disqus.html %}
+  {% if site.disqus.shortname %}
+    {% include disqus.html %}
+  {% endif %}
+
 </article>
