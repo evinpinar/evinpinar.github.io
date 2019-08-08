@@ -8,7 +8,7 @@ I am a masters Informatics (CS) student at the Technical University of Munich. M
 
 On my free times, I enjoy solving algorithms problems, playing cello and having challenges:
 - [Goodreads reading challenge 2019](https://www.goodreads.com/user_challenges/14816667)
-- [#100DaysOfCello](https://www.instagram.com/stories/highlights/18016639597108511/)
+- [#100DaysOfCello](https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDE2NjM5NTk3MTA4NTEx?igshid=u5jyi05pw0ho)
 
 During my bachelors I was in Bogazici University Computer Engineering, beautifully located in Istanbul Turkey. 
 
