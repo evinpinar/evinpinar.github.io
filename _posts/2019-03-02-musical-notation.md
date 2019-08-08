@@ -22,4 +22,4 @@ What I aim is to:
 
 This will be helpful in generating the better versions of currently played music. For instance, Rachmaninoff’s piano concerto’s are played by many, and there are recordings from the composer hisself. The players probably listen to the original recordings, and try to arise similar emotions when they play. Though, it might be helpful for them if there would be additional cues and tips along the notation.
 
-~~ ... to be continued ... ~~
+_to be continued..._
