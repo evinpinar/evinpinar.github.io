@@ -93,6 +93,9 @@ When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
   \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
 
 
+hey bu ne k_{n+1} = n^2 + k_n^2 - k_{n-1}
+
+peki ya bu nedir kardes $$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$
 
 
 
