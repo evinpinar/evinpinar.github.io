@@ -5,7 +5,7 @@ categories: [misc, tech]
 comments: true
 ---
 
-While reading Judea Pearl's [The Book of Why](http://bayes.cs.ucla.edu/WHY/), I digged a bit more into the statistical paradoxes and decided to sum the most interesting ones here. They work as brain-teasers and eye-openers, and it would be helpful to integrate them into our daily critical thinking and decision-making processes.
+While reading Judea Pearl's [The Book of Why](http://bayes.cs.ucla.edu/WHY/), I digged a bit more into the statistical paradoxes and decided to sum up the most interesting ones here. They work as brain-teasers and eye-openers, and it would be helpful to integrate them into our daily critical thinking and decision-making processes.
 
 
 ## Monty Hall Problem
@@ -48,7 +48,7 @@ Now, suppose we are to pick the most ideal goat, which we define as fluffy and k
 | Fluffy    | 5    | 35 
 | Not fluffy| 5    | 55 
 
-Here, we can see that P( kind ) = 10/100 (10%) <  P( kind \| fluffy) = 5/40 (12.5%) and 
+Here, we can see that P( kind ) = 10/100 (10%) <  P( kind \| fluffy) = 5/40 (12.5%) and <br/>
 P( kind \| kind U fluffy) = 10/45 (22%) >  P( kind\| fluffy, fluffy U kind) = 5/40 (12.5%).
 
 Among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy. 
