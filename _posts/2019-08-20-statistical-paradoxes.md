@@ -16,11 +16,13 @@ Assume that you're on a game, and there are three doors upon you where one leads
 
 You should switch your door, if the host did not choose the door at random. Here is why:
 
+<p align="center">
 | Door 1 | Door 2 | Door3  | Switch  | Stay
 | ------ | ------ | ------ | ------- | ------
 | Car    | Goat   | Goat   |  Lose   |  Win
 | Goat   | Car    | Goat   |  Win    |  Lose
 | Goat   | Goat   | Car    |  Win    |  Lose
+</p>
 
 So, if you switch the door, the possibility of win is 2/3 whereas it is 1/3 if you choose to stay. 
 This is not really intuitive before seeing this table.
@@ -48,8 +50,8 @@ Now, suppose we are to pick the most ideal goat, which we define as fluffy and k
 | Fluffy    | 5    | 35 
 | Not fluffy| 5    | 55 
 
-P( kind ) = 10/100 (10%) <  P( kind | fluffy) = 5/40 (12.5%)
-P( kind | kind U fluffy) = 10/45 (22%) >  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%)
+$$ P( kind ) = 10/100 (10%) <  P( kind | fluffy) = 5/40 (12.5%) $$
+$$ P( kind | kind U fluffy) = 10/45 (22%) >  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%)$$
 
 Here, among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy. 
 
@@ -66,19 +68,23 @@ The figure shows this phenomenon (from Pearl's book):
 
 ![](/images/simpsons.png "Simpson's")
 
+$$
+\begin{aligned}
 P(heart attack in women | drug) = 3/40 > 1/20 = P(heart attack in women | no drug)
 P(heart attack in men | drug) = 8/20 > 12/40 = P(heart attack in men | no drug)
 P(heart attack | drug) = (3+8)/(40+20) < (1+12)/(40+20) = P(heart attack | no drug)
+\end{aligned}
+$$
 
 When we combine the probabilities among women and men, inequality reverses direction. For an unknown reason, people get surprised on this reversal even though it is mathematically normal. 
 
-A/B > a/b
-C/D > c/d
-(A+C)/(B+D)>(a+c)/(b+d) -> Such a combination is actually wrong!
+$$ A/B > a/b $$
+$$ C/D > c/d $$
+$$ (A+C)/(B+D)>(a+c)/(b+d) $$  -> Such a combination is actually wrong!
 
 This fallacy also occurs in college admissions, or in sport's competitions...
 
-## Gambler's Fallacy
+<!-- ## Gambler's Fallacy
 
 ## Friendship Paradox
 
@@ -92,10 +98,9 @@ $$
 When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
   \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
 
-
 hey bu ne k_{n+1} = n^2 + k_n^2 - k_{n-1}
 
-peki ya bu nedir kardes $$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$
+peki ya bu nedir kardes $$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$ -->
 
 
 
