@@ -58,7 +58,7 @@ Such paradox also occur in epidemiological studies concerning two independent di
 Likewise, people tend to look for nice and handsome partners. It might feel like these features are negatively correlated, because they do not consider the both unkind and ugly ones.
 
 
-### Simpson's Paradox
+## Simpson's Paradox
 
 Let's assume that there is a drug that increases the heart attack rate both male goats and female goats. Yet surprisingly, it decreases the heart attach in whole population. 
 
@@ -82,6 +82,12 @@ This fallacy also occurs in college admissions, or in sport's competitions...
 
 ## Friendship Paradox
 
+$$
+\begin{aligned}
+\mathbf{x} &= [x_1, x_2, \dots, x_n] \\
+\mathbf{y} &= [y_1, y_2, \dots, y_m]
+\end{aligned}
+$$
 
 
 
