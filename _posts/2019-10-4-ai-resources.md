@@ -5,7 +5,7 @@ categories: [ai, tech]
 comments: true
 ---
 
-Here are some newspapers, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand [what AI is](http://www-formal.stanford.edu/jmc/whatisai/whatisai.html). (This list does not contain educational resources which are fairly straightforward to obtain - udemy, coursera, mit, etc...)
+Here are some newsletters, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand [what AI is](http://www-formal.stanford.edu/jmc/whatisai/whatisai.html). (This list does not contain educational resources which are fairly straightforward to obtain - udemy, coursera, mit, etc...)
 
 ### Newsletters
 
