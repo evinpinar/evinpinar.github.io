@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ACM International Collegiate Programming Contest
+title: TU Munich Informatik Masters
 categories: [Medium]
 ---
 
