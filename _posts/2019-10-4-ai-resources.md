@@ -1,15 +1,15 @@
 ---
 layout: post
-title: AI Resources 
+title: AI News-Resources 
 categories: [ai, tech]
 comments: true
 ---
 
-Here are some newspapers, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand [what AI is](http://www-formal.stanford.edu/jmc/whatisai/whatisai.html). (This list does not contain education resources which are fairly straightforward to find i think)
+Here are some newspapers, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand [what AI is](http://www-formal.stanford.edu/jmc/whatisai/whatisai.html). (This list does not contain educational resources which are fairly straightforward to obtain - udemy, coursera, mit, etc...)
 
 ### Newsletters
 
-* [MIT Technology Review - The Algorithm] (https://forms.technologyreview.com/the-algorithm/)
+* [MIT Technology Review - The Algorithm](https://forms.technologyreview.com/the-algorithm/)
 * [Data Elixir](https://dataelixir.com)
 * [Deep Learning Weekly](https://www.deeplearningweekly.com)
 * [Inside AI](https://inside.com/ai?token=aLMFIzMYgiM67X_qvgKo3A)
@@ -31,7 +31,7 @@ Here are some newspapers, blogs, links, and twitter accounts that I follow to ge
 * [Open AI](https://openai.com) (i mean, come on)
 * [Salesforce AI team](https://einstein.ai) 
 * [Towards Data Science](https://towardsdatascience.com)
-* [Karpathy](http://karpathy.github.io) (he does not really blog anymore, it is more of a deep learning bible)
+* [Karpathy](http://karpathy.github.io)(he does not really blog anymore, it is more of a deep learning bible)
 * [Nielsen](http://michaelnielsen.org)
 
 * [Twitter accounts](https://twitter.com/evinpinar/lists/ai-people)
