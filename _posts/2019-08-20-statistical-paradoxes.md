@@ -48,8 +48,8 @@ Now, suppose we are to pick the most ideal goat, which we define as fluffy and k
 | Fluffy    | 5    | 35 
 | Not fluffy| 5    | 55 
 
-Here, we can see that P( kind ) = 10/100 (10%) <  P( kind | fluffy) = 5/40 (12.5%) and 
-P( kind | kind U fluffy) = 10/45 (22%) >  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%).
+Here, we can see that P( kind ) = 10/100 (10%) <  P( kind \| fluffy) = 5/40 (12.5%) and 
+P( kind \| kind U fluffy) = 10/45 (22%) >  P( kind\| fluffy, fluffy U kind) = 5/40 (12.5%).
 
 Among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy. 
 
@@ -67,15 +67,15 @@ The figure shows this phenomenon (from Pearl's book):
 ![](/images/simpsons.png "Simpson's")
 
 
-P(heart attack in women | drug) = 3/40 > 1/20 = P(heart attack in women | no drug)
-P(heart attack in men | drug) = 8/20 > 12/40 = P(heart attack in men | no drug) 
-P(heart attack | drug) = (3+8)/(40+20) < (1+12)/(40+20) = P(heart attack | no drug) 
+P(heart attack in women \| drug) = 3/40 > 1/20 = P(heart attack in women \| no drug)
+P(heart attack in men \| drug) = 8/20 > 12/40 = P(heart attack in men \| no drug) 
+P(heart attack \| drug) = (3+8)/(40+20) < (1+12)/(40+20) = P(heart attack \| no drug) 
 
 
 When we combine the probabilities among women and men, inequality reverses direction. For an unknown reason, people get surprised on this reversal even though it is mathematically normal. 
 
-A/B > a/b 
-C/D > c/d
+A/B > a/b \
+C/D > c/d \
 (A+C)/(B+D)>(a+c)/(b+d)  -> Such a combination is actually wrong!
 
 This fallacy also occurs in college admissions, or in sport's competitions...
