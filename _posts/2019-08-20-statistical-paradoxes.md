@@ -16,13 +16,13 @@ Assume that you're on a game, and there are three doors upon you where one leads
 
 You should switch your door, if the host did not choose the door at random. Here is why:
 
-<p align="center">
+<center>
 | Door 1 | Door 2 | Door3  | Switch  | Stay
 | ------ | ------ | ------ | ------- | ------
 | Car    | Goat   | Goat   |  Lose   |  Win
 | Goat   | Car    | Goat   |  Win    |  Lose
 | Goat   | Goat   | Car    |  Win    |  Lose
-</p>
+</center>
 
 So, if you switch the door, the possibility of win is 2/3 whereas it is 1/3 if you choose to stay. 
 This is not really intuitive before seeing this table.
@@ -50,7 +50,7 @@ Now, suppose we are to pick the most ideal goat, which we define as fluffy and k
 | Fluffy    | 5    | 35 
 | Not fluffy| 5    | 55 
 
-$$ P( kind ) = 10/100 (10%) <  P( kind | fluffy) = 5/40 (12.5%) $$
+$$ P( kind ) = 10/100 (10%) <  P( kind | fluffy) = 5/40 (12.5%) $$ \\
 $$ P( kind | kind U fluffy) = 10/45 (22%) >  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%)$$
 
 Here, among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy. 
@@ -70,9 +70,9 @@ The figure shows this phenomenon (from Pearl's book):
 
 $$
 \begin{aligned}
-P(heart attack in women | drug) = 3/40 > 1/20 = P(heart attack in women | no drug)
-P(heart attack in men | drug) = 8/20 > 12/40 = P(heart attack in men | no drug)
-P(heart attack | drug) = (3+8)/(40+20) < (1+12)/(40+20) = P(heart attack | no drug)
+P(heart attack in women | drug) = 3/40 > 1/20 = P(heart attack in women | no drug) \\
+P(heart attack in men | drug) = 8/20 > 12/40 = P(heart attack in men | no drug) \\
+P(heart attack | drug) = (3+8)/(40+20) < (1+12)/(40+20) = P(heart attack | no drug) \\
 \end{aligned}
 $$
 
