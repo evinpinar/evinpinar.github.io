@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 I am a masters Informatics (CS) student at the Technical University of Munich. My current interests are on computer vision, machine learning and natural language processing. I'm also an amateur cellist, playing in [Junge Münchner Symphoniker](http://junge-muenchner-symphoniker.de). </br>
-You can find my **resume [here](https://github.com/evinpinar/evinpinar.github.io/raw/master/Ornek_EvinPinar.pdf)**.
+You can find my **resume [here](https://docs.google.com/gview?url=https://github.com/evinpinar/evinpinar.github.io/raw/master/Ornek_EvinPinar.pdf&embedded=true)**.
 
 On my free times, I enjoy solving algorithms problems, playing cello and having challenges:
 - [Goodreads reading challenge 2019](https://www.goodreads.com/user_challenges/14816667)
