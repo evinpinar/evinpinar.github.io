@@ -33,6 +33,7 @@ Here are some newsletters, blogs, links, and twitter accounts that I follow to g
 * [Towards Data Science](https://towardsdatascience.com)
 * [Karpathy](http://karpathy.github.io)(he does not really blog anymore, it is more of a deep learning bible)
 * [Nielsen](http://michaelnielsen.org)
+* [Louis Kirsch](http://louiskirsch.com/blog/)
 
 * [Twitter accounts](https://twitter.com/evinpinar/lists/ai-people)
 
