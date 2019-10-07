@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Google Staj Deneyimim - My Google Internship
+title: Google Staj Deneyimim - My Google Internship Experience
 categories: [Medium]
 ---
 
