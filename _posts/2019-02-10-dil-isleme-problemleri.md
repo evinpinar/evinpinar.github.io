@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Dil İşleme Problemleri
+title: Dil İşleme Problemleri - NLP Problems Explained in Turkish 
 categories: [Medium, nlp, AI]
 ---
 
