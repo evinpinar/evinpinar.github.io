@@ -23,35 +23,35 @@ Following this question, the research in depth estimation from RGB images is div
 
 There are some ideas and keywords that occur in the literature that we should be aware of first. These concepts would be familiar to you if you have taken a Multi-View Geometry course. Otherwise, I will try to explain in very simple and clear way. 
 
-# Rigid Body Motion
+### Rigid Body Motion
 
 The motion in 3D space is formalised by Euclid, hence the "Euclidean coordinates" usually refers to 3D coordinates that concern us in real life. Here, we can define the motions of rigid objects as rotation and translation.
 
-![](/images/paper_review1/se3.jpg "SE(3)")
+![](/images/paper_review1/se3.png "SE(3)")
 
 We can apply this matrix to any 3D point to get the new coordinates of point after a motion.
 
-![](/images/paper_review1/xvec.jpg "P vec")
+![](/images/paper_review1/xvec.png "P vec")
 
-![](/images/paper_review1/rbd1.jpg "RBD")
+![](/images/paper_review1/rbd1.png "RBD")
 
-# Perspective Projection
+### Perspective Projection
 
 The study of projecting the 3D points to 2D images taken with a camera is "perspective projection". For such a pin-hole thin lense camera model with a focal length f:
 
-![](/images/paper_review1/focal.jpg "focal1")
+![](/images/paper_review1/focal.png "focal1")
 
 We can retrieve the image x and y coordinates by:
 
-![](/images/paper_review1/focal2.jpg "focal2")
+![](/images/paper_review1/focal2.png "focal2")
 
 In vector form, it is same with:
 
-![](/images/paper_review1/focal3.jpg "focal3")
+![](/images/paper_review1/focal3.png "focal3")
 
 And finally, the standardized notation in homogeneous coordinates is: 
 
-![](/images/paper_review1/focal4.jpg "focal4")
+![](/images/paper_review1/focal4.png "focal4")
 
 
 
