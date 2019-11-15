@@ -23,37 +23,57 @@ Following this question, the research in depth estimation from RGB images is div
 
 There are some ideas and keywords that occur in the literature that we should be aware of first. These concepts would be familiar to you if you have taken a Multi-View Geometry course. Otherwise, I will try to explain in very simple and clear way. 
 
-### Rigid Body Motion
+#### Rigid Body Motion
 
 The motion in 3D space is formalised by Euclid, hence the "Euclidean coordinates" usually refers to 3D coordinates that concern us in real life. Here, we can define the motions of rigid objects as rotation and translation.
 
-<img src="/images/paper_review1/se3.png" height="100">
+<img src="/images/paper_review1/se3.png" height="75">
 
 We can apply this matrix to any 3D point to get the new coordinates of point after a motion.
 
-<img src="/images/paper_review1/xvec.png" height="50">
+<img src="/images/paper_review1/xvec.png" height="20">
 
-<img src="/images/paper_review1/rbd1.png" height="50">
+<img src="/images/paper_review1/rbd1.png" height="30">
 
-### Perspective Projection
+#### Perspective Projection
 
 The study of projecting the 3D points to 2D images taken with a camera is "perspective projection". For such a pin-hole thin lense camera model with a focal length f:
 
-![](/images/paper_review1/focal.png "focal1")
+<img src="/images/paper_review1/focal.png" height="150">
 
 We can retrieve the image x and y coordinates by:
 
-![](/images/paper_review1/focal2.png "focal2")
+<img src="/images/paper_review1/focal2.png" height="100">
 
 In vector form, it is same with:
 
-![](/images/paper_review1/focal3.png "focal3")
+<img src="/images/paper_review1/focal3.png" height="100">
 
 And finally, the standardized notation in homogeneous coordinates is: 
 
-![](/images/paper_review1/focal4.png "focal4")
+<img src="/images/paper_review1/focal.png" >
 
 
+#### Structure vs Motion
 
+Here, "structure" refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras "motion" refers to recovering rigid body motion (transformation) of these points. To be have a full understanding of 3D environment, we should estimate both. If we know one, the estimation of the other becomes easier.
+
+
+#### Odometry
+
+It is the study of estimating motion of an object. Ego-motion refers to estimating the camera's 3D motion.
+
+#### Photo-consistency
+
+A 3D voxel should have same colors on different images taken from different angles. With this assumption, we can take two images of the same scene, and find the transformation between images. 
+
+
+#### Lambertian surface
+
+It is the ideal matte surface where the brightness is same from different angles. The shiny, metal or glass surfaces in the scene are non-Lambertian.
+
+#### Image warping
+
+It literally means moving the pixels of images. For example, we can multiply the x coordinate pixels with two, and the image will look twice bigger horizontally.
 
 
