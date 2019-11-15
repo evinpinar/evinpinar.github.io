@@ -27,13 +27,13 @@ There are some ideas and keywords that occur in the literature that we should be
 
 The motion in 3D space is formalised by Euclid, hence the "Euclidean coordinates" usually refers to 3D coordinates that concern us in real life. Here, we can define the motions of rigid objects as rotation and translation.
 
-![](/images/paper_review1/se3.png "SE(3)") <!-- .element height="50%" width="50%" -->
+<img src="/images/paper_review1/se3.png" height="100">
 
 We can apply this matrix to any 3D point to get the new coordinates of point after a motion.
 
-![](/images/paper_review1/xvec.png "P vec"){:height="50%" width="50%"}
+<img src="/images/paper_review1/xvec.png" height="50">
 
-<img src="/images/paper_review1/rbd1.png" width="100" height="100">
+<img src="/images/paper_review1/rbd1.png" height="50">
 
 ### Perspective Projection
 
