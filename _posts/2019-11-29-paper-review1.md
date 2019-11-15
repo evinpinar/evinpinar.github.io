@@ -14,9 +14,11 @@ Depth prediction is a fundamental task for us to perceive the 3D environment aro
 
 Currently, depth estimation relies on sensors such as LIDAR and radar or RGBD cameras. However, there are two problems in this setting. First, these sensors return sparse inputs, especially perform poorly on edges, far points and uncommon surfaces. Second, they are extremely expensive to allow mass production. For these reasons, it is highly desirable to be able to estimate depth without external sensors, and only with an ordinary RGB camera. 
 
-From another point of view, a question that commonly arise is “Can people perform depth inference perfectly with only one eye?”. Some believe that our depth prediction relies on perfectly calibrated two eyes, yet some others think that the second eye exists only for backup and does not effect our depth understanding.
+> "Can people perform depth inference perfectly with only one eye?"
 
-Following this question, the research in depth estimation from RGB images is divided into two: stereo setting and the monocular setting. By stereo, I mean either images from stereo cameras, or the consecutive frames of videos taken with a single camera. By monocular, a single image without any previous or next similar frame. Also, the stereo setting inherently creates further opportunities in unsupervised (self-supervised) learning. Practically, self-supervision is very useful since we do not need any ground truth annotations!  
+Some believe that our depth prediction relies on perfectly calibrated two eyes, yet some others think that the second eye exists only for backup and does not effect our depth understanding.
+
+Following this question, the research in depth estimation from RGB images is divided into two: **stereo** setting and the **monocular** setting. By stereo, I mean either images from stereo cameras, or the consecutive frames of videos taken with a single camera. By monocular, a single image without any previous or next similar frame. Also, the stereo setting inherently creates further opportunities in **unsupervised (self-supervised) learning**. Practically, self-supervision is very useful since we do not need any ground truth annotations!  
 
 
 ## Concepts
@@ -31,7 +33,7 @@ The motion in 3D space is formalised by Euclid, hence the "Euclidean coordinates
 
 We can apply this matrix to any 3D point to get the new coordinates of point after a motion.
 
-<img src="/images/paper_review1/xvec.png" height="20">
+<img src="/images/paper_review1/xvec.png" height="30">
 
 <img src="/images/paper_review1/rbd1.png" height="30">
 
@@ -39,11 +41,11 @@ We can apply this matrix to any 3D point to get the new coordinates of point aft
 
 The study of projecting the 3D points to 2D images taken with a camera is "perspective projection". For such a pin-hole thin lense camera model with a focal length f:
 
-<img src="/images/paper_review1/focal.png" height="150">
+<img src="/images/paper_review1/focal.png" height="250">
 
 We can retrieve the image x and y coordinates by:
 
-<img src="/images/paper_review1/focal2.png" height="100">
+<img src="/images/paper_review1/focal2.png" height="70">
 
 In vector form, it is same with:
 
@@ -51,17 +53,17 @@ In vector form, it is same with:
 
 And finally, the standardized notation in homogeneous coordinates is: 
 
-<img src="/images/paper_review1/focal.png" >
+<img src="/images/paper_review1/focal4.png" >
 
 
 #### Structure vs Motion
 
-Here, "structure" refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras "motion" refers to recovering rigid body motion (transformation) of these points. To be have a full understanding of 3D environment, we should estimate both. If we know one, the estimation of the other becomes easier.
+Here, **structure** refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras **motion** refers to recovering rigid body motion (transformation) of these points. To be have a full understanding of 3D environment, we should estimate both. If we know one, the estimation of the other becomes easier.
 
 
 #### Odometry
 
-It is the study of estimating motion of an object. Ego-motion refers to estimating the camera's 3D motion.
+It is the study of estimating motion of an object. * *Ego-motion* * refers to estimating the camera's 3D motion.
 
 #### Photo-consistency
 
@@ -75,5 +77,43 @@ It is the ideal matte surface where the brightness is same from different angles
 #### Image warping
 
 It literally means moving the pixels of images. For example, we can multiply the x coordinate pixels with two, and the image will look twice bigger horizontally.
+
+
+## Previous Works
+
+1. **Monocular supervised** 
+
+2. **Stereo unsupervised** 
+
+3. **Optical flow in dynamic environment**
+
+## Method
+
+#### Problem Setup 
+
+Our problem is estimating the structure and motion together in an unsupervised way. Hence, we wish to estimate depth values, along with the transformation matrices between different images. 
+
+Zhou et al. proposed two neural networks for estimating these values separately. Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts the transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom).
+
+We wish to predict the 3D world coordinates and motion between images. How can we train the networks to predict these parameters correctly? 
+
+Getting back to the concepts I have introduced, photo-consistency assumes that the objects (3D points) in the environment should have same color values on different images. To check that, we can warp the first image to the second one by the estimated parameters, and check if it has same color values with the target (ground truth) second image.
+
+See the following formula:
+
+<img src="/images/paper_review1/warp.png" height="100">
+
+<img src="/images/paper_review1/Lvs.png" height="100">
+
+#### Baseline Model
+
+Writer of the paper used different loss functions in combination to train the base neural architecture model. These losses are:
+
+
+#### Motion Model
+
+#### Object Size Constraint
+
+#### Online Refinement for Domain Transfer
 
 
