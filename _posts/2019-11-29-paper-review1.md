@@ -33,7 +33,7 @@ We can apply this matrix to any 3D point to get the new coordinates of point aft
 
 ![](/images/paper_review1/xvec.png "P vec"){:height="50%" width="50%"}
 
-![](/images/paper_review1/rbd1.png "RBD")
+<img src="/images/paper_review1/rbd1.png" width="100" height="100">
 
 ### Perspective Projection
 
