@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: 
 title: Paper Review on Monocular Depth Prediction
 categories: [AI, tech]
 comments: true
