@@ -1,0 +1,75 @@
+[
+  
+    {
+
+      "title"    : "Paper Analysis on Monocular Depth Prediction for Autonomous Driving",
+      "url"      : "/paper-review1/",
+      "category" : "AI, CV",
+      "date"     : "November 29, 2019"
+    } ,
+  
+    {
+
+      "title"    : "AI News-Resources",
+      "url"      : "/ai-resources/",
+      "category" : "ai, tech",
+      "date"     : "October  4, 2019"
+    } ,
+  
+    {
+
+      "title"    : "Statistical Paradoxes",
+      "url"      : "/statistical-paradoxes/",
+      "category" : "misc, tech",
+      "date"     : "August 20, 2019"
+    } ,
+  
+    {
+
+      "title"    : "Towards a New Musical Notation",
+      "url"      : "/musical-notation/",
+      "category" : "music, AI",
+      "date"     : "March  2, 2019"
+    } ,
+  
+    {
+
+      "title"    : "Dil İşleme Problemleri - NLP Problems Explained in Turkish",
+      "url"      : "/dil-isleme-problemleri/",
+      "category" : "Medium, nlp, AI",
+      "date"     : "February 10, 2019"
+    } ,
+  
+    {
+
+      "title"    : "WaveNet Implementation and Experiments",
+      "url"      : "/wavenet-pytorch/",
+      "category" : "Medium, tech, AI",
+      "date"     : "July 31, 2018"
+    } ,
+  
+    {
+
+      "title"    : "TU Munich Informatik Masters",
+      "url"      : "/tum-informatik/",
+      "category" : "Medium",
+      "date"     : "January 13, 2018"
+    } ,
+  
+    {
+
+      "title"    : "Google Staj Deneyimim - My Google Internship Experience",
+      "url"      : "/google-staji/",
+      "category" : "Medium",
+      "date"     : "November  5, 2016"
+    } ,
+  
+    {
+
+      "title"    : "ACM International Collegiate Programming Contest",
+      "url"      : "/icpc/",
+      "category" : "Medium",
+      "date"     : "October 30, 2016"
+    } 
+  
+]

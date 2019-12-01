@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://evinpinar.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://evinpinar.github.io/" rel="alternate" type="text/html" /><updated>2019-12-01T04:16:29+01:00</updated><id>http://evinpinar.github.io/feed.xml</id><title type="html">evinpinar’s blog</title><subtitle>On tech, AI, music, misc...</subtitle><author><name>Evin Pinar Ornek</name></author><entry><title type="html">Paper Analysis on Monocular Depth Prediction for Autonomous Driving</title><link href="http://evinpinar.github.io/paper-review1/" rel="alternate" type="text/html" title="Paper Analysis on Monocular Depth Prediction for Autonomous Driving" /><published>2019-11-29T00:00:00+01:00</published><updated>2019-11-29T00:00:00+01:00</updated><id>http://evinpinar.github.io/paper-review1</id><content type="html" xml:base="http://evinpinar.github.io/paper-review1/">&lt;p&gt;In this blog post, I will review the paper &lt;a href=&quot;https://arxiv.org/abs/1811.06152&quot;&gt;Depth Prediction Without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos&lt;/a&gt; published in AAAI 2019 &lt;a class=&quot;citation&quot; href=&quot;#casser2019struct2depth&quot;&gt;[1]&lt;/a&gt;. After briefly introducing the topic and the relevant concepts, I will explain the method in my own words. Then we will discuss the results and future works.&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Depth prediction is a fundamental task for us to perceive the 3D environment around us. Through depth inference, we can grab the objects, move around and perform our daily tasks. To be able to create autonomous objects that can perform similar tasks to people, we should model this 3D perception. Autonomous cars should detect the other cars and pedestrians, and plan their trajectory in 3D environment. Likewise, robots need to move in their environment, grab things, carry to some distance and replace them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/kitti_output.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Currently, depth estimation relies on sensors such as LIDAR and radar or RGBD cameras. However, there are two problems in this setting. First, these sensors return sparse inputs, especially perform poorly on edges, far points and uncommon surfaces. Second, they are extremely expensive to allow mass production. For these reasons, it is highly desirable to be able to estimate depth without external sensors, and only with an ordinary RGB camera.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Can people perform depth inference perfectly with only one eye?”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Some believe that our depth prediction relies on perfectly calibrated two eyes, yet some others think that the second eye exists only for backup and does not effect our depth understanding.&lt;/p&gt;
+
+&lt;p&gt;Following this question, the research in depth estimation from RGB images is divided into two: &lt;strong&gt;stereo&lt;/strong&gt; setting and the &lt;strong&gt;monocular&lt;/strong&gt; setting. By stereo, I mean either images from stereo cameras, or the consecutive frames of videos taken with a single camera. By monocular, a single image without any previous or next similar frame. Also, the stereo setting inherently creates further opportunities in &lt;strong&gt;unsupervised (self-supervised) learning&lt;/strong&gt;. Practically, self-supervision is very useful since we do not need any ground truth annotations!&lt;/p&gt;
+
+&lt;h2 id=&quot;concepts&quot;&gt;Concepts&lt;/h2&gt;
+
+&lt;p&gt;There are some ideas and keywords that occur in the literature that we should be aware of first. These concepts would be familiar to you if you have taken a Multi-View Geometry course. Otherwise, I will try to explain in very simple and clear way.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt; Rigid Body Motion&lt;/p&gt;
+
+&lt;p&gt;Motion in 3D space is formalised by Euclid and the “Euclidean coordinates” usually refers to 3D coordinates that concern us in real life. Here, we can define the motions of rigid objects as rotation and translation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/se3.png&quot; height=&quot;75&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can apply this matrix to any 3D point to get the new coordinates of point after a motion.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/rbd1.png&quot; height=&quot;40&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/xvec.png&quot; height=&quot;25&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Perspective Projection&lt;/p&gt;
+
+&lt;p&gt;The study of projecting the 3D points to 2D images taken with a camera is “perspective projection”. For such a pin-hole thin lense camera model with a focal length f:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/focal.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can retrieve x and y image coordinates by:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/focal2.png&quot; height=&quot;50&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In vector form, it is same with:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/focal3.png&quot; height=&quot;60&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And finally, the standardized notation in homogeneous coordinates is:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/focal4.png&quot; height=&quot;100&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Structure vs Motion&lt;/p&gt;
+
+&lt;p&gt;Here, &lt;strong&gt;structure&lt;/strong&gt; refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras &lt;strong&gt;motion&lt;/strong&gt; refers to recovering rigid body motion (transformation) of these points. To be have a full understanding of 3D environment, we should estimate both. If we know one, the estimation of the other becomes easier.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Odometry&lt;/p&gt;
+
+&lt;p&gt;It is the study of estimating motion of an object. &lt;strong&gt;Ego-motion&lt;/strong&gt; refers to estimating the camera’s 3D motion.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Image warping&lt;/p&gt;
+
+&lt;p&gt;It literally means moving the pixels of images. For example, we can multiply the x coordinate pixels with two, and the image will look twice bigger horizontally. In our case, we are interested in moving the pixels according to a known transformation matrix. Let’s say we have a point pt with the depth value D(pt). We can apply a transformation to that pixel and can find it’s new location with the following formula:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/warp.png&quot; height=&quot;60&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Or if we know the new location of the point, but do not know the depth, we can infer it’s depth value with the same formula. Likewise, if we don’t know the transformation but have depth values, T can be directly calculated.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Assumptions:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Photo-consistency&lt;/em&gt;: A 3D voxel should have same colors on different images taken from different angles. With this assumption, we can take two images of the same scene, and find the transformation between images.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Lambertian surface&lt;/em&gt;: It is the ideal matte surface where the brightness is same from different angles. The shiny, metal or glass surfaces in the scene are non-Lambertian.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;previous-works&quot;&gt;Previous Works&lt;/h1&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;1. Supervised monocular&lt;/p&gt;
+&lt;p&gt;Depth estimation from an RGB image is an ill-posed problem which cannot be solved by having assumptions and priors about the real world. For that reason, it is particularly suitable for neural networks which can capture the parameters and the internal priors in the images. First neural succesful model was introduced by Eigen &lt;a class=&quot;citation&quot; href=&quot;#eigen2014&quot;&gt;[2]&lt;/a&gt;. Then, Laina used a Resnet model and pointed the long-tailed distribution of depth values in scene &lt;a class=&quot;citation&quot; href=&quot;#laina2016deeper&quot;&gt;[3]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;2. Unsupervised stereo&lt;/p&gt;
+
+&lt;p&gt;When there are no depth ground truths but two images taken from a stereo camera, as I have told before, if we know the transformation between the cameras, we can estimate the depth values of the points. This is called stereopsis, or left-right consistency. Godard proposed a model based on this principle which can be seen below &lt;a class=&quot;citation&quot; href=&quot;#monodepth17&quot;&gt;[4]&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/godard.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ummenhofer predicted optical flow and normals along the depth values which work as complementary tasks &lt;a class=&quot;citation&quot; href=&quot;#ummenhofer_demon:_2017&quot;&gt;[5]&lt;/a&gt;. Zhan worked on feature levels &lt;a class=&quot;citation&quot; href=&quot;#Zhan_2018_CVPR&quot;&gt;[6]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;3. Unsupervised monocular&lt;/p&gt;
+
+&lt;p&gt;When there are no stereo cameras but consecutive RGB frames, we can use these frames as stereo input. Garg used such videos with the known transformations between frames &lt;a class=&quot;citation&quot; href=&quot;#garg2016unsupervised&quot;&gt;[7]&lt;/a&gt;. Take a look at their model:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/garg.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;They estimate the depth values of the left image, and apply warping to reconstruct the right image. Then they use photometric consistency loss to train the network.&lt;/p&gt;
+
+&lt;p&gt;Zhou et al. improved this model by estimating the transformation parameters as well &lt;a class=&quot;citation&quot; href=&quot;#zhou2017unsupervised&quot;&gt;[8]&lt;/a&gt;. I will talk about their model more in detail.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;4. Optical flow in dynamic environment&lt;/p&gt;
+
+&lt;p&gt;Optical flow is the 2D motion field between two images. Models of Yang et al. and Yin et al. are based on predicting optical flows instead of motion parameters &lt;a class=&quot;citation&quot; href=&quot;#yang&quot;&gt;[9], [10]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;method&quot;&gt;Method&lt;/h1&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Problem Setup&lt;/p&gt;
+
+&lt;p&gt;Our problem is estimating the structure and motion together in an unsupervised way. Hence, we wish to estimate depth values, along with the transformation matrices between different images.&lt;/p&gt;
+
+&lt;p&gt;Zhou et al. proposed two neural networks for estimating these values separately&lt;a class=&quot;citation&quot; href=&quot;#zhou2017unsupervised&quot;&gt;[8]&lt;/a&gt;. Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts the transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom). Their network is:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/zhou.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“How can we train networks to predict depth and transformation parameters correctly?”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Getting back to the concepts I have introduced, photo-consistency assumes that the objects (3D points) in the environment should have same color values on different images. To check that, we can warp the first image to the second one by the estimated parameters, and check if it has same color values with the target (ground truth) second image which can be seen below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/zhou_vs.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/Lvs.png&quot; height=&quot;50&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here T describes the motion of the camera, and assumes that no other object moves in the space. There should not be major occlusions/disocclusions. Hence, dynamicity is minimum or none in the scene. Also the surfaces should be Lambertian.&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Contributions of the Paper&lt;/p&gt;
+
+&lt;p&gt;The main contributions of the paper are:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;To improve Zhou et al’s model for dynamic environments because real driving setting is highly dynamic with all the cars and objects moving around.&lt;/li&gt;
+  &lt;li&gt;To overcome domain adaptation problems particularly for monocular depth estimation.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/network.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Baseline Model&lt;/p&gt;
+
+&lt;p&gt;Author’s use the same neural network from Zhou’s, with these loss functions:
+1.&lt;em&gt;L_reconstruction&lt;/em&gt;: Error between the ground truth frame and the synthesized view.&lt;/p&gt;
+
+&lt;p&gt;2.&lt;em&gt;L_SSIM&lt;/em&gt;: It was introduced by Wang et al. as another metric to compare images&lt;a class=&quot;citation&quot; href=&quot;#wang&quot;&gt;[11]&lt;/a&gt;. Instead of errors between pixels, it compares the luminance, contrast and brightness of images through following formula:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/SSIM.png&quot; height=&quot;70&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3.&lt;em&gt;L_smoothness&lt;/em&gt;: It is for further depth regularization. It is similar to total variation, but encourages depth map to have smooth edges on matching edges from RGB image.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/Lsm.png&quot; height=&quot;70&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, inputs are three consecutive frames 1-2-3 and the warpings are done between 1-2 and 2-3. They choose the one with the minimum error as suggested by Godard &lt;a class=&quot;citation&quot; href=&quot;#monodepth17&quot;&gt;[4]&lt;/a&gt; to prevent any major occlusions that might occur and create huge unwanted errors:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/Lrec.png&quot; height=&quot;40&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Motion Model&lt;/p&gt;
+
+&lt;p&gt;Authors propose to estimate motion of each object in the scene separately, and combine them to create the final view. To do that, they precompute binary masks of objects through Mask R-CNN and apply to the scenes (shown as elementwise production in formulas). Then they:&lt;/p&gt;
+
+&lt;p&gt;1.Remove all objects from scene to have a static background to estimate ego-motion. We are left with background scenes without any moving objects.
+&lt;img src=&quot;/images/paper_review1/layout.png&quot; height=&quot;35&quot; /&gt;
+2.Apply estimated ego-motion to all frames to remove the effect of ego-motion.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/egomotion.png&quot; height=&quot;30&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3.Then for each object, estimate it’s motion separately. (Input is the image where only the object is seen, other pixels are black.)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/objectmotion.png&quot; height=&quot;80&quot; /&gt;
+4.Reconstruct the new frame for each object and background by applying the masks.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/combine.png&quot; height=&quot;90&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Object Size Constraint&lt;/p&gt;
+
+&lt;p&gt;A common issue in these models is the &lt;em&gt;infinite-depth degeneracy&lt;/em&gt;. When an object is moving at the same speed with the camera, the networks estimates depth values to the object. Because normally, that object should have some motion. If the motion is not observable, it must be very far away and we cannot perceive such a motion.&lt;/p&gt;
+
+&lt;p&gt;Another issue in monocular depth prediction is sometimes to estimate ridiculous depth values because the average shapes/heights of the objects are unknown. An object might be regarded as too close to the camera with a small motion, or far away from camera with a small motion.&lt;/p&gt;
+
+&lt;p&gt;Authors propose using some weak priors to lead meaningful depths. If an average height of the object is known, depth can be calculated directly:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/weakp.png&quot; height=&quot;200&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/weakd.png&quot; height=&quot;30&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Where h is the pixelwise height of the object and f focal length of camera. Ideally, this calculated depth should be same with the networks’ depth estimation for that object. Author’s model use differentiable weak priors for each different object category.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/Lsc.png&quot; height=&quot;80&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;Online Refinement for Domain Transfer&lt;/p&gt;
+
+&lt;p&gt;Finally, when a model trained on KITTI dataset is tested on a different driving dataset, this new dataset is regarded as a different domain because there are some inconsistencies:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Global scales between them do not match, they are taken with different cameras, different angles/heights.&lt;/li&gt;
+  &lt;li&gt;Temporal shifts between frames may mismatch due to fps settings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To alleviate this, authors propose using the test data to train the model on the fly. Hence, each test data is iterated on the model for 20 times and model adapts itself for the new dataset.&lt;/p&gt;
+
+&lt;h1 id=&quot;experiments&quot;&gt;Experiments&lt;/h1&gt;
+
+&lt;p&gt;Authors run their experiments on these datasets:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;KITTI (~40K images total, LIDAR depth sensor)&lt;/li&gt;
+  &lt;li&gt;Cityscapes (~4K images especially high dynamicity)&lt;/li&gt;
+  &lt;li&gt;Fetch Indoor Navigation (~1.5K images, collected from a robot in indoor environment, used for online refinement )&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And they qualitatively evaluate the results in:&lt;/p&gt;
+
+&lt;p&gt;1.Depth metrics:
+&lt;img src=&quot;/images/paper_review1/depth_metrics.png&quot; height=&quot;80&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2.Odometry metric (Absolute Trajectory Error)&lt;/p&gt;
+
+&lt;p&gt;Their depth and odometry results for KITTI establish SOTA according to these tables from paper:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/kittidepth.png&quot; height=&quot;220&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/kittiodo.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The depth results especially show improvements on infinite-depth degeneracy problem as can be seen in the images below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/infin.png&quot; height=&quot;300&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And they applied online refinement on a Cityspaces trained model with Indoor Fetch dataset. Their motion model show some improvement on the baseline, but the refinement model makes it much better qualitatively. Also the depth maps become better as seen:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/refin1.png&quot; height=&quot;250&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/refin2.png&quot; height=&quot;100&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;discussion&quot;&gt;Discussion&lt;/h1&gt;
+
+&lt;p&gt;As future work, authors suggest applying full 3D reconstruction on scenes to be able to use 3D priors. Also, using longer and different sequences for online refinement to understand the hidden mechanism seems like another interesting direction. 
+Zhou pointed in their paper to make this process independent from camera intrinsics, to be able to train the model on any input video.&lt;/p&gt;
+
+&lt;p&gt;Personally, I believe that this paper tackles a very relevant and realistic issue in odometry/depth estimation. Objects in real life are not static, and everything moves and changes!&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;I find their masking method intuitive. Yet, training relies on pre-trained masks and it is questionable whether the method is fully unsupervised.&lt;/li&gt;
+  &lt;li&gt;Injecting weak priors is very creative and sensible. I think such priors should be investigated more and evaluated in detail. Currently, the paper does not provide any evaluations on that.&lt;/li&gt;
+  &lt;li&gt;I think online refinement does not sound like a new method, but it is definitely interesting in self supervised depth estimation setting. How does model modify itself to new data domain, which parts get updated, and do they point to any specifics like camera intrinsics, scale vs?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some open questions arose are:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;How to evaluate the object motions? Maybe a simulator can be used to create a dataset where all the object motion ground-truths are known.&lt;/li&gt;
+  &lt;li&gt;Are there any other cues/assumptions in object motions, similar to the weak priors?&lt;/li&gt;
+  &lt;li&gt;Do pose and depth models train in a way that they depend on each other, or is it a fully independent case? For example, what happens if we use a single camera but in two settings: one by placing the camera on top of the car, one on the hood of the car. Can we use the same depth networks but train for new poses?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:110%; font-weight:bold;&quot;&gt;My run&lt;/p&gt;
+
+&lt;p&gt;Writers provide their model network in Tensorflow code &lt;a href=&quot;https://github.com/tensorflow/models/tree/master/research/struct2depth&quot;&gt;struct2depth&lt;/a&gt;. I have run their code both on a KITTI sequence and a random driving video from Youtube. To prepare the object instance labels, I used matterport’s &lt;a href=&quot;https://github.com/matterport/Mask_RCNN&quot;&gt;Mask R-CNN implementation&lt;/a&gt;. As preparing the data was a little tedious, I provide the jupyter lab files that I have used &lt;a href=&quot;&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/melbourne.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/paper_review1/kitti_output.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To sum up, I think this paper is a good attempt to alleviate the unrealistic static scene assumption and it supports flexible environments with self-supervised learning for autonomous driving. I believe there are many questions and problems in this area that can be tackled.&lt;/p&gt;
+
+&lt;p&gt;&lt;sub&gt;&lt;sup&gt;Here is a link for &lt;a href=&quot;https://drive.google.com/file/d/14oNrfLpiwHwWuJC5wNM-7XjZzmFoCYqM/view?usp=sharing&quot;&gt;presentation slides&lt;/a&gt; of this blog post.&lt;sub&gt;&lt;sup&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p align=&quot;left&quot; style=&quot;font-size:90%; font-weight:bold;&quot;&gt;References&lt;/p&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;ruby&quot;&gt;[1]D. Flanagan and Y. Matsumoto, &lt;i&gt;The Ruby Programming Language&lt;/i&gt;. O’Reilly Media, 2008.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;casser2019struct2depth&quot;&gt;[2]V. Casser, S. Pirk, R. Mahjourian, and A. Angelova, “Depth Prediction without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos,” in &lt;i&gt;Thirty-Third AAAI Conference on Artificial Intelligence (AAAI-19)&lt;/i&gt;, 2019.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;zhou2017unsupervised&quot;&gt;[3]T. Zhou, M. Brown, N. Snavely, and D. G. Lowe, “Unsupervised Learning of Depth and Ego-Motion from Video,” in &lt;i&gt;CVPR&lt;/i&gt;, 2017.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;eigen2014&quot;&gt;[4]D. Eigen, C. Puhrsch, and R. Fergus, “Depth Map Prediction from a Single Image using a Multi-Scale Deep Network,” in &lt;i&gt;Advances in Neural Information Processing Systems 27&lt;/i&gt;, Z. Ghahramani, M. Welling, C. Cortes, N. D. Lawrence, and K. Q. Weinberger, Eds. Curran Associates, Inc., 2014, pp. 2366–2374.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;laina2016deeper&quot;&gt;[5]I. Laina, C. Rupprecht, V. Belagiannis, F. Tombari, and N. Navab, “Deeper depth prediction with fully convolutional residual networks,” in &lt;i&gt;3D Vision (3DV), 2016 Fourth International Conference on&lt;/i&gt;, 2016, pp. 239–248.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;monodepth17&quot;&gt;[6]C. Godard, O. Mac Aodha, and G. J. Brostow, “Unsupervised Monocular Depth Estimation with Left-Right Consistency,” in &lt;i&gt;CVPR&lt;/i&gt;, 2017.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;ummenhofer_demon:_2017&quot;&gt;[7]B. Ummenhofer &lt;i&gt;et al.&lt;/i&gt;, “DeMoN: Depth and Motion Network for Learning Monocular Stereo,” in &lt;i&gt;IEEE Conference on Computer Vision and Pattern Recognition (CVPR)&lt;/i&gt;, 2017.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;Zhan_2018_CVPR&quot;&gt;[8]H. Zhan, R. Garg, C. Saroj Weerasekera, K. Li, H. Agarwal, and I. Reid, “Unsupervised Learning of Monocular Depth Estimation and Visual Odometry With Deep Feature Reconstruction,” in &lt;i&gt;The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)&lt;/i&gt;, 2018.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;yang&quot;&gt;[9]C. Luo &lt;i&gt;et al.&lt;/i&gt;, “Every Pixel Counts ++: Joint Learning of Geometry and Motion with 3D Holistic Understanding,” &lt;i&gt;IEEE Transactions on Pattern Analysis and Machine Intelligence&lt;/i&gt;, pp. 1–1, 2019.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;yin&quot;&gt;[10]Z. Yin and J. Shi, “GeoNet: Unsupervised Learning of Dense Depth, Optical Flow and Camera Pose,” in &lt;i&gt;2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition&lt;/i&gt;, 2018, pp. 1983–1992.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;wang&quot;&gt;[11]Zhou Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, “Image quality assessment: from error visibility to structural similarity,” &lt;i&gt;IEEE Transactions on Image Processing&lt;/i&gt;, vol. 13, no. 4, pp. 600–612, Apr. 2004.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;garg2016unsupervised&quot;&gt;[12]R. Garg, B. G. V. Kumar, G. Carneiro, and I. Reid, “Unsupervised CNN for single view depth estimation: Geometry to the rescue,” in &lt;i&gt;European Conference on Computer Vision&lt;/i&gt;, 2016, pp. 740–756.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">In this blog post, I will review the paper Depth Prediction Without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos published in AAAI 2019 [11]. After briefly introducing the topic and the relevant concepts, I will explain the method in my own words. Then we will discuss the results and future works.</summary></entry><entry><title type="html">AI News-Resources</title><link href="http://evinpinar.github.io/ai-resources/" rel="alternate" type="text/html" title="AI News-Resources" /><published>2019-10-04T00:00:00+02:00</published><updated>2019-10-04T00:00:00+02:00</updated><id>http://evinpinar.github.io/ai-resources</id><content type="html" xml:base="http://evinpinar.github.io/ai-resources/">&lt;p&gt;Here are some newsletters, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand &lt;a href=&quot;http://www-formal.stanford.edu/jmc/whatisai/whatisai.html&quot;&gt;what AI is&lt;/a&gt;. (This list does not contain educational resources which are fairly straightforward to obtain - udemy, coursera, mit, etc…)&lt;/p&gt;
+
+&lt;h3 id=&quot;newsletters&quot;&gt;Newsletters&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://forms.technologyreview.com/the-algorithm/&quot;&gt;MIT Technology Review - The Algorithm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dataelixir.com&quot;&gt;Data Elixir&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.deeplearningweekly.com&quot;&gt;Deep Learning Weekly&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://inside.com/ai?token=aLMFIzMYgiM67X_qvgKo3A&quot;&gt;Inside AI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://us13.campaign-archive.com/home/?u=67bd06787e84d73db24fb0aa5&amp;amp;id=6c9d98ff2c&quot;&gt;Import AI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.deeplearning.ai/thebatch/&quot;&gt;The Batch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://newsletter.ruder.io&quot;&gt;NLP News&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://technews.acm.org&quot;&gt;ACM Tech News&lt;/a&gt; (not specifically AI)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.getrevue.co/profile/wildml&quot;&gt;Wild ML&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;blogs&quot;&gt;Blogs&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.acolyer.org&quot;&gt;the morning paper&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.shakirm.com&quot;&gt;the Spectator&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.princeton.edu/imabandit/about-me/&quot;&gt;I’m a bandit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://francisbach.com&quot;&gt;Francis Bach&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.computervisionblog.com&quot;&gt;Tombone’s Computer Vision Blog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://machinelearningmastery.com/blog/&quot;&gt;machine learning mastery&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ai.googleblog.com&quot;&gt;Google Research Blog&lt;/a&gt; (ehem, of course -.-)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openai.com&quot;&gt;Open AI&lt;/a&gt; (i mean, come on)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://einstein.ai&quot;&gt;Salesforce AI team&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://towardsdatascience.com&quot;&gt;Towards Data Science&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://karpathy.github.io&quot;&gt;Karpathy&lt;/a&gt;(he does not really blog anymore, it is more of a deep learning bible)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://michaelnielsen.org&quot;&gt;Nielsen&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://louiskirsch.com/blog/&quot;&gt;Louis Kirsch&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://twitter.com/evinpinar/lists/ai-people&quot;&gt;Twitter accounts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;awesome&quot;&gt;Awesome&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/josephmisiti/awesome-machine-learning#readme&quot;&gt;Machine learning&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ChristosChristofidis/awesome-deep-learning#readme&quot;&gt;Deep learning&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jbhuang0604/awesome-computer-vision#readme&quot;&gt;Computer vision&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/edobashira/speech-language-processing#readme&quot;&gt;Speech &amp;amp; Language Processing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;mailing-lists&quot;&gt;Mailing lists&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.deepdyve.com&quot;&gt;Deep Dyve&lt;/a&gt; subscription sends you the most recent journal titles of your interest.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://scholar.google.com&quot;&gt;Google Scholar Alerts&lt;/a&gt; informs you about the latest articles of the researchers/keywords/topics that you follow.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://duerer.usc.edu/mailman/listinfo.cgi/robotics-worldwide&quot;&gt;Robotics worldwide&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;ml-news@googlegroups.com&quot;&gt;ML news&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">Here are some newsletters, blogs, links, and twitter accounts that I follow to get the most up-to-date news and happenings in AI, to understand what AI is. (This list does not contain educational resources which are fairly straightforward to obtain - udemy, coursera, mit, etc…)</summary></entry><entry><title type="html">Statistical Paradoxes</title><link href="http://evinpinar.github.io/statistical-paradoxes/" rel="alternate" type="text/html" title="Statistical Paradoxes" /><published>2019-08-20T00:00:00+02:00</published><updated>2019-08-20T00:00:00+02:00</updated><id>http://evinpinar.github.io/statistical-paradoxes</id><content type="html" xml:base="http://evinpinar.github.io/statistical-paradoxes/">&lt;p&gt;While reading Judea Pearl’s &lt;a href=&quot;http://bayes.cs.ucla.edu/WHY/&quot;&gt;The Book of Why&lt;/a&gt;, I digged a bit more into the statistical paradoxes and decided to sum up the most interesting ones here. They work as brain-teasers and eye-openers, and it would be helpful to integrate them into our daily critical thinking and decision-making processes.&lt;/p&gt;
+
+&lt;h2 id=&quot;monty-hall-problem&quot;&gt;Monty Hall Problem&lt;/h2&gt;
+
+&lt;p&gt;Assume that you’re on a game, and there are three doors upon you where one leads to a car and the others lead to goats. You pick the door #1, and the host opens one of the goat-doors. Now, you can either stay on your door, or switch your door. What would you do?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/monty.jpg&quot; alt=&quot;&quot; title=&quot;Monty Hall&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You should switch your door, if the host did not choose the door at random. Here is why:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Door 1&lt;/th&gt;
+      &lt;th&gt;Door 2&lt;/th&gt;
+      &lt;th&gt;Door3&lt;/th&gt;
+      &lt;th&gt;Switch&lt;/th&gt;
+      &lt;th&gt;Stay&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;So, if you switch the door, the possibility of win is 2/3 whereas it is 1/3 if you choose to stay. 
+This is not really intuitive before seeing this table.&lt;/p&gt;
+
+&lt;p&gt;However, if the host would choose a random door (no matter it is goat or car), then staying would lead us to a higher chance of winning. Because this time (you picked door 1):&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Door 1&lt;/th&gt;
+      &lt;th&gt;Door 2&lt;/th&gt;
+      &lt;th&gt;Door3&lt;/th&gt;
+      &lt;th&gt;Door opened&lt;/th&gt;
+      &lt;th&gt;Switch&lt;/th&gt;
+      &lt;th&gt;Stay&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Win&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Goat&lt;/td&gt;
+      &lt;td&gt;Car&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+      &lt;td&gt;Lose&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;berksons-paradox&quot;&gt;Berkson’s Paradox&lt;/h2&gt;
+
+&lt;p&gt;Now, suppose we are to pick the most ideal goat, which we define as fluffy and kind (not stubborn). We visit the barn and there are 100 goats, 40 are fluffy (40%), 10 are kind (10%), 5 are fluffy and kind ( 12.5% of the fluffy ones are kind). The owner of the goats shows us 45 goats, which are fluffy and/or kind. Among the ones we see, over 22% of them are kind (10/45), and again 12.5% of the fluffy ones are kind. The kindness increased but fluffiness remained same. Hence, people usually tend to think that these two attributes are negatively correlated: if a goat is fluffy, it is a small chance that it is kind, and vice versa. This occurs due to selective bias and observing only the fluffy or kind goats.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/goat.jpg&quot; alt=&quot;&quot; title=&quot;Berkson's&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt;Kind&lt;/th&gt;
+      &lt;th&gt;Not kind&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Fluffy&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;35&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Not fluffy&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Here, we can see that P( kind ) = 10/100 (10%) &amp;lt;  P( kind | fluffy) = 5/40 (12.5%) and &lt;br /&gt;
+P( kind | kind U fluffy) = 10/45 (22%) &amp;gt;  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%).&lt;/p&gt;
+
+&lt;p&gt;Among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy.&lt;/p&gt;
+
+&lt;p&gt;Such paradox also occur in epidemiological studies concerning two independent diseases. Usually, the researchers sample the people from disease 1 and/or disease 2, and they tend to think that these diseases are negatively correlated. That occurs because they do not include undiseased (not 1, not 2) samples.&lt;/p&gt;
+
+&lt;p&gt;Likewise, people tend to look for nice and handsome partners. It might feel like these features are negatively correlated, because they do not consider the both unkind and ugly ones.&lt;/p&gt;
+
+&lt;h2 id=&quot;simpsons-paradox&quot;&gt;Simpson’s Paradox&lt;/h2&gt;
+
+&lt;p&gt;Let’s assume that there is a drug that increases the heart attack rate both male goats and female goats. Yet surprisingly, it decreases the heart attach in whole population.&lt;/p&gt;
+
+&lt;p&gt;The figure shows this phenomenon (from Pearl’s book):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/simpsons.png&quot; alt=&quot;&quot; title=&quot;Simpson's&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;P(heart attack in women | drug) = 3/40 &amp;gt; 1/20 = P(heart attack in women | no drug) &lt;br /&gt;
+P(heart attack in men | drug) = 8/20 &amp;gt; 12/40 = P(heart attack in men | no drug)  &lt;br /&gt;
+P(heart attack | drug) = (3+8)/(40+20) &amp;lt; (1+12)/(40+20) = P(heart attack | no drug) &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;When we combine the probabilities among women and men, inequality reverses direction. For an unknown reason, people get surprised on this reversal even though it is mathematically normal.&lt;/p&gt;
+
+&lt;p&gt;A/B &amp;gt; a/b &lt;br /&gt;
+C/D &amp;gt; c/d &lt;br /&gt;
+(A+C)/(B+D)&amp;gt;(a+c)/(b+d)  -&amp;gt; Such a combination is actually wrong! &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This fallacy also occurs in college admissions, or in sport’s competitions…&lt;/p&gt;
+
+&lt;!-- ## Gambler's Fallacy
+
+## Friendship Paradox
+
+$$
+\begin{aligned}
+\mathbf{x} &amp;= [x_1, x_2, \dots, x_n] \\
+\mathbf{y} &amp;= [y_1, y_2, \dots, y_m]
+\end{aligned}
+$$
+
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
+  \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
+
+hey bu ne k_{n+1} = n^2 + k_n^2 - k_{n-1}
+
+peki ya bu nedir kardes $$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$ --&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">While reading Judea Pearl’s The Book of Why, I digged a bit more into the statistical paradoxes and decided to sum up the most interesting ones here. They work as brain-teasers and eye-openers, and it would be helpful to integrate them into our daily critical thinking and decision-making processes.</summary></entry><entry><title type="html">Towards a New Musical Notation</title><link href="http://evinpinar.github.io/musical-notation/" rel="alternate" type="text/html" title="Towards a New Musical Notation" /><published>2019-03-02T00:00:00+01:00</published><updated>2019-03-02T00:00:00+01:00</updated><id>http://evinpinar.github.io/musical-notation</id><content type="html" xml:base="http://evinpinar.github.io/musical-notation/">&lt;p&gt;Think about a cello performance, of Yo-Yo-Ma playing Bach Suite 3, Gigue. Now think of Rostropovich. They actually play very differently which can be understood by an average classical music listener.&lt;/p&gt;
+
+&lt;p&gt;Now, check the music sheets of Bach’s pieces. There are nothing other than the black dots, which are some notes on an F key in a very simple form: no bow indications nor accents. There are no indications of how to play each of these tones.&lt;/p&gt;
+
+&lt;p&gt;Since there are no indications, the interpretation of each performer has an important role on the style of the piece. Yo-Yo-Ma bounds more tones together, whereas Rostropovich puts soft staccatos on these. We understand it either by listening their recordings, and/or by watching.&lt;/p&gt;
+
+&lt;p&gt;After a long time of musical evolution, the number of “style indicators” have increased. During the classic period, the styles of the pieces and how they should be played become more restricted. At romantic period, the number of words emerged for the emotions that should be emitted. Currently, it depends on composer’s decision, some give more freedom of interpretations or some define all possible details.&lt;/p&gt;
+
+&lt;p&gt;What are the possible details, then? Is it even possible to put everything into a form and the music sheet? At some sense, the number of words and detail increase when it is found to be necessary. There is a long process of writing, testing, writing and testing. The musical notation and theory has evolved in a similar way. Though, it is not that simple, because the aim to compose a classical piece is to let others play it. A set of possible limits are given by the composer, and all other points that are not predefined are in the hands of the performer. The performer adds her own emotions and delivers to the others. They sometimes record, but then it is a piece played by a specific person, and it should not be really compared to others. It is a new unique piece.&lt;/p&gt;
+
+&lt;p&gt;What I aim is to:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Watch the videos of different players of a single piece, say Bach’s Gigue&lt;/li&gt;
+  &lt;li&gt;Detect the differences in performer’s styles&lt;/li&gt;
+  &lt;li&gt;Find out possible extensions to the existing music notation, being it either syntactic or semantic&lt;/li&gt;
+  &lt;li&gt;Propose/generate a new sound according to the possible learned points. There might be two options here: 1. mix the styles of different sentences from different players. 2. Really generate a new perspective.(This might indicate that an AI can have true &lt;strong&gt;creativity&lt;/strong&gt;.)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This will be helpful in generating the better versions of currently played music. For instance, Rachmaninoff’s piano concerto’s are played by many, and there are recordings from the composer hisself. The players probably listen to the original recordings, and try to arise similar emotions when they play. Though, it might be helpful for them if there would be additional cues and tips along the notation.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;to be continued…&lt;/em&gt;&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">Think about a cello performance, of Yo-Yo-Ma playing Bach Suite 3, Gigue. Now think of Rostropovich. They actually play very differently which can be understood by an average classical music listener.</summary></entry><entry><title type="html">Dil İşleme Problemleri - NLP Problems Explained in Turkish</title><link href="http://evinpinar.github.io/dil-isleme-problemleri/" rel="alternate" type="text/html" title="Dil İşleme Problemleri - NLP Problems Explained in Turkish" /><published>2019-02-10T00:00:00+01:00</published><updated>2019-02-10T00:00:00+01:00</updated><id>http://evinpinar.github.io/dil-isleme-problemleri</id><content type="html" xml:base="http://evinpinar.github.io/dil-isleme-problemleri/">&lt;p&gt;An itibariyle dil işleme görevlerine en iyi çözümler yapay sinirsel ağlarla üretiliyor. Bugün okuduğum bir makale &lt;a href=&quot;https://arxiv.org/abs/1901.11373&quot;&gt;Learning and evaluating general linguistic intelligence&lt;/a&gt;, günümüzde en doğru sonuçlar veren sinir ağı/dil modellerini ve sıradaki aşılması gereken bazı problemleri güzel bir şekilde açıklayıp, bir de yeni bir metrik tanıtmış. Makale ile beraber bu problemlerden, metriklerden ve sorunların üzerinden geçerek, aralara da kendi açıklama ve yorumlarımı sıkıştıracağım.&lt;/p&gt;
+
+&lt;p&gt;Yazının devamına &lt;a href=&quot;https://medium.com/@evinpinar/dil-işleme-problemleri-73fb0fd77f94&quot;&gt;Medium’dan erişebilirsiniz&lt;/a&gt;.&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">An itibariyle dil işleme görevlerine en iyi çözümler yapay sinirsel ağlarla üretiliyor. Bugün okuduğum bir makale Learning and evaluating general linguistic intelligence, günümüzde en doğru sonuçlar veren sinir ağı/dil modellerini ve sıradaki aşılması gereken bazı problemleri güzel bir şekilde açıklayıp, bir de yeni bir metrik tanıtmış. Makale ile beraber bu problemlerden, metriklerden ve sorunların üzerinden geçerek, aralara da kendi açıklama ve yorumlarımı sıkıştıracağım.</summary></entry><entry><title type="html">WaveNet Implementation and Experiments</title><link href="http://evinpinar.github.io/wavenet-pytorch/" rel="alternate" type="text/html" title="WaveNet Implementation and Experiments" /><published>2018-07-31T00:00:00+02:00</published><updated>2018-07-31T00:00:00+02:00</updated><id>http://evinpinar.github.io/wavenet-pytorch</id><content type="html" xml:base="http://evinpinar.github.io/wavenet-pytorch/">&lt;p&gt;This semester, as part of my complementary school work, I worked on Text-To-Speech(TTS) problem for few months in an AI startup in Munich(Luminovo.ai). Here, I will talk about my part of work, implementation and experiments on Angela Merkel speech.&lt;/p&gt;
+
+&lt;p&gt;The rest of this post was &lt;a href=&quot;https://medium.com/@evinpinar/wavenet-implementation-and-experiments-2d2ee57105d5&quot;&gt;published on Medium&lt;/a&gt;.&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">This semester, as part of my complementary school work, I worked on Text-To-Speech(TTS) problem for few months in an AI startup in Munich(Luminovo.ai). Here, I will talk about my part of work, implementation and experiments on Angela Merkel speech.</summary></entry><entry><title type="html">TU Munich Informatik Masters</title><link href="http://evinpinar.github.io/tum-informatik/" rel="alternate" type="text/html" title="TU Munich Informatik Masters" /><published>2018-01-13T00:00:00+01:00</published><updated>2018-01-13T00:00:00+01:00</updated><id>http://evinpinar.github.io/tum-informatik</id><content type="html" xml:base="http://evinpinar.github.io/tum-informatik/">&lt;p&gt;I have recently moved to Munich and started my masters degree after finishing the bachelors. It is my first semester yet, and I want to talk about my first impressions of Munich and the TU.&lt;/p&gt;
+
+&lt;p&gt;The rest of this post was &lt;a href=&quot;https://medium.com/@evinpinar/tu-münich-cs-master-impressions-a8333283c7ae&quot;&gt;published on Medium&lt;/a&gt;.&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">I have recently moved to Munich and started my masters degree after finishing the bachelors. It is my first semester yet, and I want to talk about my first impressions of Munich and the TU.</summary></entry><entry><title type="html">Google Staj Deneyimim - My Google Internship Experience</title><link href="http://evinpinar.github.io/google-staji/" rel="alternate" type="text/html" title="Google Staj Deneyimim - My Google Internship Experience" /><published>2016-11-05T00:00:00+01:00</published><updated>2016-11-05T00:00:00+01:00</updated><id>http://evinpinar.github.io/google-staji</id><content type="html" xml:base="http://evinpinar.github.io/google-staji/">&lt;p&gt;Geçen yaz Google Zürih ofisinde Site Reliability Engineering stajı yaptım. Bu stajın başvuru processi(SWE/SRE), SRE’nin ne olduğu ve stajımın nasıl geçtiğiyle ilgili gelen birçok soru üzerine böyle bir yazı yazayım dedim. Umarım soruları yeterince yanıtlayabilirim.&lt;/p&gt;
+
+&lt;p&gt;Yazının devamına &lt;a href=&quot;https://medium.com/@evinpinar/googleda-staj-deneyimim-156824f38a7c&quot;&gt;Medium’dan erişebilirsiniz&lt;/a&gt;.&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">Geçen yaz Google Zürih ofisinde Site Reliability Engineering stajı yaptım. Bu stajın başvuru processi(SWE/SRE), SRE’nin ne olduğu ve stajımın nasıl geçtiğiyle ilgili gelen birçok soru üzerine böyle bir yazı yazayım dedim. Umarım soruları yeterince yanıtlayabilirim.</summary></entry><entry><title type="html">ACM International Collegiate Programming Contest</title><link href="http://evinpinar.github.io/icpc/" rel="alternate" type="text/html" title="ACM International Collegiate Programming Contest" /><published>2016-10-30T00:00:00+02:00</published><updated>2016-10-30T00:00:00+02:00</updated><id>http://evinpinar.github.io/icpc</id><content type="html" xml:base="http://evinpinar.github.io/icpc/">&lt;p&gt;Geçen haftasonu (Ekim 2016) ACM ICPC yarışmasının güneydoğu Avrupa ayağına, Bükreş’te katıldık. Yarışmaya 3 kişilik takımlar halinde katılıyorsunuz ve 5 saatlik sürede size verilen 11 algoritma sorusunu programlamaya çalışıyorsunuz. Yarışmanın dünyanın her bölgesinde bir ayağı oluyor ve buralardan kazanan ilk 3er takım dünya finaline katılma hakkı kazanıyor. Güneydoğu Avrupa ayağı, fiziksel olarak iki şehre ayrılmış, Bükreş ve Ukrayna yakınlarında bir kent.&lt;/p&gt;
+
+&lt;p&gt;Yazının devamına &lt;a href=&quot;https://medium.com/@evinpinar/acm-international-collegiate-programming-contest-deneyimi-bac6f35052fe&quot;&gt;Medium’dan erişebilirsiniz&lt;/a&gt;.&lt;/p&gt;</content><author><name>Evin Pinar Ornek</name></author><summary type="html">Geçen haftasonu (Ekim 2016) ACM ICPC yarışmasının güneydoğu Avrupa ayağına, Bükreş’te katıldık. Yarışmaya 3 kişilik takımlar halinde katılıyorsunuz ve 5 saatlik sürede size verilen 11 algoritma sorusunu programlamaya çalışıyorsunuz. Yarışmanın dünyanın her bölgesinde bir ayağı oluyor ve buralardan kazanan ilk 3er takım dünya finaline katılma hakkı kazanıyor. Güneydoğu Avrupa ayağı, fiziksel olarak iki şehre ayrılmış, Bükreş ve Ukrayna yakınlarında bir kent.</summary></entry></feed>
