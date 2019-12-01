@@ -1,0 +1,189 @@
+I"<p>While reading Judea Pearl’s <a href="http://bayes.cs.ucla.edu/WHY/">The Book of Why</a>, I digged a bit more into the statistical paradoxes and decided to sum up the most interesting ones here. They work as brain-teasers and eye-openers, and it would be helpful to integrate them into our daily critical thinking and decision-making processes.</p>
+
+<h2 id="monty-hall-problem">Monty Hall Problem</h2>
+
+<p>Assume that you’re on a game, and there are three doors upon you where one leads to a car and the others lead to goats. You pick the door #1, and the host opens one of the goat-doors. Now, you can either stay on your door, or switch your door. What would you do?</p>
+
+<p><img src="/images/monty.jpg" alt="" title="Monty Hall" /></p>
+
+<p>You should switch your door, if the host did not choose the door at random. Here is why:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Door 1</th>
+      <th>Door 2</th>
+      <th>Door3</th>
+      <th>Switch</th>
+      <th>Stay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>Lose</td>
+      <td>Win</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>Win</td>
+      <td>Lose</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>Win</td>
+      <td>Lose</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So, if you switch the door, the possibility of win is 2/3 whereas it is 1/3 if you choose to stay. 
+This is not really intuitive before seeing this table.</p>
+
+<p>However, if the host would choose a random door (no matter it is goat or car), then staying would lead us to a higher chance of winning. Because this time (you picked door 1):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Door 1</th>
+      <th>Door 2</th>
+      <th>Door3</th>
+      <th>Door opened</th>
+      <th>Switch</th>
+      <th>Stay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>2</td>
+      <td>Lose</td>
+      <td>Win</td>
+    </tr>
+    <tr>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>3</td>
+      <td>Lose</td>
+      <td>Win</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>2</td>
+      <td>Lose</td>
+      <td>Lose</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>Goat</td>
+      <td>3</td>
+      <td>Win</td>
+      <td>Lose</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>2</td>
+      <td>Win</td>
+      <td>Lose</td>
+    </tr>
+    <tr>
+      <td>Goat</td>
+      <td>Goat</td>
+      <td>Car</td>
+      <td>3</td>
+      <td>Lose</td>
+      <td>Lose</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="berksons-paradox">Berkson’s Paradox</h2>
+
+<p>Now, suppose we are to pick the most ideal goat, which we define as fluffy and kind (not stubborn). We visit the barn and there are 100 goats, 40 are fluffy (40%), 10 are kind (10%), 5 are fluffy and kind ( 12.5% of the fluffy ones are kind). The owner of the goats shows us 45 goats, which are fluffy and/or kind. Among the ones we see, over 22% of them are kind (10/45), and again 12.5% of the fluffy ones are kind. The kindness increased but fluffiness remained same. Hence, people usually tend to think that these two attributes are negatively correlated: if a goat is fluffy, it is a small chance that it is kind, and vice versa. This occurs due to selective bias and observing only the fluffy or kind goats.</p>
+
+<p><img src="/images/goat.jpg" alt="" title="Berkson's" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Kind</th>
+      <th>Not kind</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fluffy</td>
+      <td>5</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td>Not fluffy</td>
+      <td>5</td>
+      <td>55</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Here, we can see that P( kind ) = 10/100 (10%) &lt;  P( kind | fluffy) = 5/40 (12.5%) and <br />
+P( kind | kind U fluffy) = 10/45 (22%) &gt;  P( kind| fluffy, fluffy U kind) = 5/40 (12.5%).</p>
+
+<p>Among the fluffy and kind ones, the percentage of kind ones is less if we know it is fluffy. However, in the overall population, the percentage of kinds is actually high if we know it is fluffy.</p>
+
+<p>Such paradox also occur in epidemiological studies concerning two independent diseases. Usually, the researchers sample the people from disease 1 and/or disease 2, and they tend to think that these diseases are negatively correlated. That occurs because they do not include undiseased (not 1, not 2) samples.</p>
+
+<p>Likewise, people tend to look for nice and handsome partners. It might feel like these features are negatively correlated, because they do not consider the both unkind and ugly ones.</p>
+
+<h2 id="simpsons-paradox">Simpson’s Paradox</h2>
+
+<p>Let’s assume that there is a drug that increases the heart attack rate both male goats and female goats. Yet surprisingly, it decreases the heart attach in whole population.</p>
+
+<p>The figure shows this phenomenon (from Pearl’s book):</p>
+
+<p><img src="/images/simpsons.png" alt="" title="Simpson's" /></p>
+
+<p>P(heart attack in women | drug) = 3/40 &gt; 1/20 = P(heart attack in women | no drug) <br />
+P(heart attack in men | drug) = 8/20 &gt; 12/40 = P(heart attack in men | no drug)  <br />
+P(heart attack | drug) = (3+8)/(40+20) &lt; (1+12)/(40+20) = P(heart attack | no drug) <br /></p>
+
+<p>When we combine the probabilities among women and men, inequality reverses direction. For an unknown reason, people get surprised on this reversal even though it is mathematically normal.</p>
+
+<p>A/B &gt; a/b <br />
+C/D &gt; c/d <br />
+(A+C)/(B+D)&gt;(a+c)/(b+d)  -&gt; Such a combination is actually wrong! <br /></p>
+
+<p>This fallacy also occurs in college admissions, or in sport’s competitions…</p>
+
+<!-- ## Gambler's Fallacy
+
+## Friendship Paradox
+
+$$
+\begin{aligned}
+\mathbf{x} &= [x_1, x_2, \dots, x_n] \\
+\mathbf{y} &= [y_1, y_2, \dots, y_m]
+\end{aligned}
+$$
+
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
+  \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
+
+hey bu ne k_{n+1} = n^2 + k_n^2 - k_{n-1}
+
+peki ya bu nedir kardes $$mean = \frac{\displaystyle\sum_{i=1}^{n} x_{i}}{n}$$ -->
+
+:ET
