@@ -80,9 +80,6 @@ mathjax: true
 sass:
   style: :expanded # You might prefer to minify using :compressed
 
-scholar:
-  style: ieee
-
 # Use the following plug-ins
 plugins:
   - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
@@ -90,6 +87,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-paginate
   - jekyll-scholar
+
+scholar:
+  style: ieee
 
 include: ['_pages']
 
