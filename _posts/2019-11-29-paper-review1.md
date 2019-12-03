@@ -9,18 +9,18 @@ In this blog post, I will review the paper [Depth Prediction Without the Sensors
 
 # Introduction
 
-Depth prediction is a fundamental task for us to perceive the 3D environment around us. Through depth inference, we can grab the objects, move around and perform our daily tasks. To be able to create autonomous objects that can perform similar tasks to people, we should model this 3D perception. Autonomous cars should detect the other cars and pedestrians, and plan their trajectory in 3D environment. Likewise, robots need to move in their environment, grab things, carry to some distance and replace them. Look at a KITTI sequence with depth predictions [[2]](#2):
+Depth prediction is a fundamental task in perceiving the 3D environment around us. Through depth inference, we can grab the objects, move around and perform our daily tasks. To be able to create autonomous objects that can perform similar tasks to humans, we should model this 3D perception. Autonomous cars should detect other cars and pedestrians on the road, and plan their trajectory in 3D environment. Likewise, robots need to move in their environment, grab things, carry them to some distance and replace them. Look at a KITTI sequence with depth predictions [[2]](#2):
 
 ![kitti](/images/paper_review1/kitti_output.gif)
 
 
-Currently, depth estimation relies on sensors such as LIDAR and radar or RGBD cameras. However, there are two problems in this setting. First, these sensors return sparse inputs, especially perform poorly on edges, far points and uncommon surfaces. Second, they are extremely expensive to allow mass production. For these reasons, it is highly desirable to be able to estimate depth without external sensors, and only with an ordinary RGB camera. 
+Currently, depth estimation relies on LIDAR and radar sensors or RGBD cameras. However, there are two problems in this setting. First, these sensors return *sparse* inputs, especially performing poorly on edges, far points and uncommon surfaces. Second, they are extremely *expensive* to allow mass production. For these reasons, it is highly desirable to be able to estimate depth without external sensors and only with an ordinary RGB camera. 
 
 > "Can people perform depth inference perfectly with only one eye?"
 
-Some believe that our depth prediction relies on perfectly calibrated two eyes, yet some others think that the second eye exists only for backup and does not effect our depth understanding.
+Some believe that our depth prediction relies on perfectly calibrated two eyes, yet some others think that second eye exists only for backup and does not effect our depth understanding.
 
-Following this question, the research in depth estimation from RGB images is divided into two: **stereo** setting and the **monocular** setting. By stereo, I mean either images from stereo cameras, or the consecutive frames of videos taken with a single camera. By monocular, a single image without any previous or next similar frame. Also, the stereo setting inherently creates further opportunities in **unsupervised (self-supervised) learning**. Practically, self-supervision is very useful since we do not need any ground truth annotations!  
+Following this question, the research in depth estimation from RGB images is divided into two: **stereo** setting and the **monocular** setting. By stereo, I mean either images from stereo cameras, or the consecutive frames of videos taken with a single camera. By monocular, I refer to a single image without any previous or next similar frame. Also, the stereo setting inherently creates further opportunities in **unsupervised (self-supervised) learning**. Practically, self-supervision is very useful since we do not need any ground truth annotations!  
 
 
 ## Concepts
@@ -29,7 +29,7 @@ There are some ideas and keywords that occur in the literature that we should be
 
 <p align="left" style="font-size:110%; font-weight:bold;"> Rigid Body Motion</p>
 
-Motion in 3D space is formalised by Euclid and the "Euclidean coordinates" usually refers to 3D coordinates that concern us in real life. Here, we can define the motions of rigid objects as rotation and translation.
+Motion in 3D space is formalised by Euclid and the "Euclidean coordinates" usually refer to 3D coordinates that concern us in real life. Here, we can define motions of rigid objects as rotation and translation. Transformation matrix can be built in homogeneous coordinates:
 
 <img src="/images/paper_review1/se3.png" height="75">
 
@@ -42,15 +42,15 @@ We can apply this matrix to any 3D point to get the new coordinates of point aft
 
 <p align="left" style="font-size:110%; font-weight:bold;">Perspective Projection</p>
 
-The study of projecting the 3D points to 2D images taken with a camera is "perspective projection". For such a pin-hole thin lense camera model with a focal length f:
+The study of projecting 3D points to 2D images with a camera is "perspective projection". For a pin-hole thin lense camera with a focal length f:
 
 <img src="/images/paper_review1/focal.png" height="250">
 
-We can retrieve x and y image coordinates by:
+we can retrieve x and y image coordinates by:
 
 <img src="/images/paper_review1/focal2.png" height="50">
 
-In vector form, it is same with:
+In vector form:
 
 <img src="/images/paper_review1/focal3.png" height="60">
 
@@ -61,20 +61,20 @@ And finally, the standardized notation in homogeneous coordinates is:
 
 <p align="left" style="font-size:110%; font-weight:bold;">Structure vs Motion</p>
 
-Here, **structure** refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras **motion** refers to recovering rigid body motion (transformation) of these points. To be have a full understanding of 3D environment, we should estimate both. If we know one, the estimation of the other becomes easier.
+Here, **structure** refers to estimating the real world coordinates of points, and specifically the depth values. It is about recovering the geometry. Wheras **motion** refers to recovering rigid body motion (transformation) of these points. To have a full understanding of 3D environment, we should estimate both. If we know one, estimation of the other becomes easier.
 
 <p align="left" style="font-size:110%; font-weight:bold;">Odometry</p>
 
 
-It is the study of estimating motion of an object. **Ego-motion** refers to estimating the camera's 3D motion.
+It is the study of estimating motion of an object. **Ego-motion** refers to estimating camera's 3D motion.
 
 <p align="left" style="font-size:110%; font-weight:bold;">Image warping</p>
 
-It literally means moving the pixels of images. For example, we can multiply the x coordinate pixels with two, and the image will look twice bigger horizontally. In our case, we are interested in moving the pixels according to a known transformation matrix. Let’s say we have a point pt with the depth value D(pt). We can apply a transformation to that pixel and can find it’s new location with the following formula:
+It literally means moving pixels of images. For example, we can multiply x coordinate with two, and the image will look twice as bigger horizontally. In our case, we are interested in moving pixels according to a known transformation matrix. Let’s say we have a point pt with the depth value D(pt). We can apply a transformation to that pixel and can find it’s new location with the following formula:
 
 <img src="/images/paper_review1/warp.png" height="60">
 
-Or if we know the new location of the point, but do not know the depth, we can infer it’s depth value with the same formula. Likewise, if we don’t know the transformation but have depth values, T can be directly calculated.
+If we know the new location of the point, but do not know the depth, we can infer it’s depth value with the same formula. Likewise, if we don’t know the transformation but have depth values, T can be directly calculated.
 
 **Assumptions:** 
 
@@ -85,12 +85,12 @@ Or if we know the new location of the point, but do not know the depth, we can i
 # Previous Works
 
 <p align="left" style="font-size:110%; font-weight:bold;">1. Supervised monocular</p>
-Depth estimation from an RGB image is an ill-posed problem which cannot be solved by having assumptions and priors about the real world. For that reason, it is particularly suitable for neural networks which can capture the parameters and the internal priors in the images. First neural succesful model was introduced by Eigen [[4]](#4). Then, Laina used a Resnet model and pointed the long-tailed distribution of depth values in scene [[5]](#5).
+Depth estimation from an RGB image is an ill-posed problem which cannot be solved without having assumptions and priors about the real world. For that reason, it is particularly suitable for neural networks which can capture the hidden structures and internal priors in the images. The first succesful neural model was introduced by Eigen [[4]](#4). Then, Laina used a Resnet model and pointed the long-tailed distribution of depth values in scene [[5]](#5).
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">2. Unsupervised stereo</p>
 
-When there are no depth ground truths but two images taken from a stereo camera, as I have told before, if we know the transformation between the cameras, we can estimate the depth values of the points. This is called stereopsis, or left-right consistency. Godard proposed a model based on this principle which can be seen below [[6]](#6):
+When there are no ground truth depths but two images taken from a stereo camera, as I have told before, if we know the transformation between the cameras, we can estimate depth values of the points. This is called stereopsis, or left-right consistency. Godard proposed a model based on this principle which can be seen below [[6]](#6):
 
 <img src="/images/paper_review1/godard.png" height="250">
 
@@ -104,9 +104,9 @@ When there are no stereo cameras but consecutive RGB frames, we can use these fr
 
 <img src="/images/paper_review1/garg.png" height="250">
 
-They estimate the depth values of the left image, and apply warping to reconstruct the right image. Then they use photometric consistency loss to train the network.
+They estimate the depth values of a left image, and apply warping to reconstruct a right image. Then they use photometric consistency loss to train the network.
 
-Zhou et al. improved this model by estimating the transformation parameters as well [[3]](#3). I will talk about their model more in detail.
+Zhou et al. improved this model by estimating the transformation parameters as well [[3]](#3). I will talk about their model later in more detail.
 
 <p align="left" style="font-size:110%; font-weight:bold;">4. Optical flow in dynamic environment</p>
 
@@ -118,25 +118,26 @@ Optical flow is the 2D motion field between two images. Models of Yang et al. an
 
 Our problem is estimating the structure and motion together in an unsupervised way. Hence, we wish to estimate depth values, along with the transformation matrices between different images. 
 
-Zhou et al. proposed two neural networks for estimating these values separately[[3]](#3). Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts the transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom). Their network is:
+Zhou et al. proposed two neural networks for estimating these values separately[[3]](#3). Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom). Their network is:
 
 <img src="/images/paper_review1/zhou.png" height="250">
 
 > "How can we train networks to predict depth and transformation parameters correctly?"
 
-Getting back to the concepts I have introduced, photo-consistency assumes that the objects (3D points) in the environment should have same color values on different images. To check that, we can warp the first image to the second one by the estimated parameters, and check if it has same color values with the target (ground truth) second image which can be seen below:
+Getting back to the concepts I have introduced, photo-consistency assumes that the objects (3D points) in environment should have same color values on different images. To check that, we can warp the first image to the second one by the estimated parameters, and check if it has same color value with the target image (the next image which is the ground truth). See how it works:
 
 <img src="/images/paper_review1/zhou_vs.png" height="250">
 
 <img src="/images/paper_review1/Lvs.png" height="50">
 
+Middle frame is warped by estimating depth map and transformation between the previous and next frames(t-1 and t+1). Then these frames are reconstructed through estimations. Loss compares the reconstructed frame and the ground truth frame. 
 Here T describes the motion of the camera, and assumes that no other object moves in the space. There should not be major occlusions/disocclusions. Hence, dynamicity is minimum or none in the scene. Also the surfaces should be Lambertian.
 
 <p align="left" style="font-size:110%; font-weight:bold;">Contributions of the Paper</p>
 
 The main contributions of the paper are:
 1. To improve Zhou et al's model for dynamic environments because real driving setting is highly dynamic with all the cars and objects moving around.
-2. To overcome domain adaptation problems particularly for monocular depth estimation. 
+2. To overcome domain adaptation problems particularly apparent in monocular depth estimation. 
 
 <img src="/images/paper_review1/network.png" height="250">
 
