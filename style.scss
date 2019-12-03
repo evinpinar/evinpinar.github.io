@@ -15,7 +15,10 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-ol.bibliography li { list-style: none }
+.caption {
+  text-align: center;
+  font-size: .8rem;
+}
 
 html {
   font-size: 100%;

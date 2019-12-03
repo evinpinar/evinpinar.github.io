@@ -86,10 +86,6 @@ plugins:
   - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
   - jekyll-seo-tag
   - jekyll-paginate
-  - jekyll-scholar
-
-scholar:
-  style: ieee
 
 include: ['_pages']
 

@@ -5,14 +5,13 @@ categories: [AI, CV]
 comments: true
 ---
 
-In this blog post, I will review the paper [Depth Prediction Without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos](https://arxiv.org/abs/1811.06152) published in AAAI 2019 [[1]](#1). After briefly introducing the topic and the relevant concepts, I will explain the method in my own words. Then we will discuss the results and future works. 
+In this blog post, I will review the paper [Depth Prediction Without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos](https://arxiv.org/abs/1811.06152) published in AAAI 2019 {% cite casser2019struct2depth %}. After briefly introducing the topic and the relevant concepts, I will explain the method in my own words. Then we will discuss the results and future works.  <a name="abcde"> [1] </a>
 
 # Introduction
 
-Depth prediction is a fundamental task for us to perceive the 3D environment around us. Through depth inference, we can grab the objects, move around and perform our daily tasks. To be able to create autonomous objects that can perform similar tasks to people, we should model this 3D perception. Autonomous cars should detect the other cars and pedestrians, and plan their trajectory in 3D environment. Likewise, robots need to move in their environment, grab things, carry to some distance and replace them. Look at a KITTI sequence with depth predictions [[2]](#2):
+Depth prediction is a fundamental task for us to perceive the 3D environment around us. Through depth inference, we can grab the objects, move around and perform our daily tasks. To be able to create autonomous objects that can perform similar tasks to people, we should model this 3D perception. Autonomous cars should detect the other cars and pedestrians, and plan their trajectory in 3D environment. Likewise, robots need to move in their environment, grab things, carry to some distance and replace them. 
 
-![kitti](/images/paper_review1/kitti_output.gif)
-
+<img src="/images/paper_review1/kitti_output.gif">
 
 Currently, depth estimation relies on sensors such as LIDAR and radar or RGBD cameras. However, there are two problems in this setting. First, these sensors return sparse inputs, especially perform poorly on edges, far points and uncommon surfaces. Second, they are extremely expensive to allow mass production. For these reasons, it is highly desirable to be able to estimate depth without external sensors, and only with an ordinary RGB camera. 
 
@@ -85,32 +84,32 @@ Or if we know the new location of the point, but do not know the depth, we can i
 # Previous Works
 
 <p align="left" style="font-size:110%; font-weight:bold;">1. Supervised monocular</p>
-Depth estimation from an RGB image is an ill-posed problem which cannot be solved by having assumptions and priors about the real world. For that reason, it is particularly suitable for neural networks which can capture the parameters and the internal priors in the images. First neural succesful model was introduced by Eigen [[4]](#4). Then, Laina used a Resnet model and pointed the long-tailed distribution of depth values in scene [[5]](#5).
+Depth estimation from an RGB image is an ill-posed problem which cannot be solved by having assumptions and priors about the real world. For that reason, it is particularly suitable for neural networks which can capture the parameters and the internal priors in the images. First neural succesful model was introduced by Eigen {% cite eigen2014 %}. Then, Laina used a Resnet model and pointed the long-tailed distribution of depth values in scene {% cite laina2016deeper%}.
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">2. Unsupervised stereo</p>
 
-When there are no depth ground truths but two images taken from a stereo camera, as I have told before, if we know the transformation between the cameras, we can estimate the depth values of the points. This is called stereopsis, or left-right consistency. Godard proposed a model based on this principle which can be seen below [[6]](#6):
+When there are no depth ground truths but two images taken from a stereo camera, as I have told before, if we know the transformation between the cameras, we can estimate the depth values of the points. This is called stereopsis, or left-right consistency. Godard proposed a model based on this principle which can be seen below {% cite monodepth17%}:
 
 <img src="/images/paper_review1/godard.png" height="250">
 
-Ummenhofer predicted optical flow and normals along the depth values which work as complementary tasks [[7]](#7). Zhan worked on feature levels [[8]](#8). 
+Ummenhofer predicted optical flow and normals along the depth values which work as complementary tasks {% cite ummenhofer_demon:_2017%}. Zhan worked on feature levels {% cite Zhan_2018_CVPR%}. 
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">3. Unsupervised monocular</p>
 
-When there are no stereo cameras but consecutive RGB frames, we can use these frames as stereo input. Garg used such videos with the known transformations between frames [[12]](#12). Take a look at their model:
+When there are no stereo cameras but consecutive RGB frames, we can use these frames as stereo input. Garg used such videos with the known transformations between frames {% cite garg2016unsupervised%}. Take a look at their model:
 
 
 <img src="/images/paper_review1/garg.png" height="250">
 
 They estimate the depth values of the left image, and apply warping to reconstruct the right image. Then they use photometric consistency loss to train the network.
 
-Zhou et al. improved this model by estimating the transformation parameters as well [[3]](#3). I will talk about their model more in detail.
+Zhou et al. improved this model by estimating the transformation parameters as well {% cite zhou2017unsupervised %}. I will talk about their model more in detail.
 
 <p align="left" style="font-size:110%; font-weight:bold;">4. Optical flow in dynamic environment</p>
 
-Optical flow is the 2D motion field between two images. Models of Yang et al. and Yin et al. are based on predicting optical flows instead of motion parameters [[9]](#9), [[10]](#10). 
+Optical flow is the 2D motion field between two images. Models of Yang et al. and Yin et al. are based on predicting optical flows instead of motion parameters {% cite yang yin %}. 
 
 # Method
 
@@ -118,7 +117,7 @@ Optical flow is the 2D motion field between two images. Models of Yang et al. an
 
 Our problem is estimating the structure and motion together in an unsupervised way. Hence, we wish to estimate depth values, along with the transformation matrices between different images. 
 
-Zhou et al. proposed two neural networks for estimating these values separately[[3]](#3). Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts the transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom). Their network is:
+Zhou et al. proposed two neural networks for estimating these values separately{% cite zhou2017unsupervised %}. Namely, the first autoencoder takes an RGB image as input, and predicts the depth map by regression. The second network takes two images, and predicts the transformation parameters between these images (rotation and translation, 6 Degrees-Of-Freedom). Their network is:
 
 <img src="/images/paper_review1/zhou.png" height="250">
 
@@ -146,7 +145,7 @@ The main contributions of the paper are:
 Author’s use the same neural network from Zhou’s, with these loss functions:
 1.*L_reconstruction*: Error between the ground truth frame and the synthesized view.
 
-2.*L_SSIM*: It was introduced by Wang et al. as another metric to compare images[[11]](#11). Instead of errors between pixels, it compares the luminance, contrast and brightness of images through following formula:
+2.*L_SSIM*: It was introduced by Wang et al. as another metric to compare images{% cite wang%}. Instead of errors between pixels, it compares the luminance, contrast and brightness of images through following formula:
 
 <img src="/images/paper_review1/SSIM.png" height="70">
 
@@ -154,7 +153,7 @@ Author’s use the same neural network from Zhou’s, with these loss functions:
 
 <img src="/images/paper_review1/Lsm.png" height="70">
 
-Here, inputs are three consecutive frames 1-2-3 and the warpings are done between 1-2 and 2-3. They choose the one with the minimum error as suggested by Godard [[6]](#6) to prevent any major occlusions that might occur and create huge unwanted errors:
+Here, inputs are three consecutive frames 1-2-3 and the warpings are done between 1-2 and 2-3. They choose the one with the minimum error as suggested by Godard {% cite monodepth17%} to prevent any major occlusions that might occur and create huge unwanted errors:
 
 <img src="/images/paper_review1/Lrec.png" height="40">
 
@@ -250,7 +249,7 @@ Some open questions arose are:
 
 <p align="left" style="font-size:110%; font-weight:bold;">My run</p>
 
-Writers provide their model network in Tensorflow code [struct2depth](https://github.com/tensorflow/models/tree/master/research/struct2depth). I have run their code both on a KITTI sequence and a random driving video from Youtube. To prepare the object instance labels, I used matterport's [Mask R-CNN implementation](https://github.com/matterport/Mask_RCNN). As preparing the data was a little tedious, I provide some extra code and the jupyter lab files that I have used [here]().
+Writers provide their model network in Tensorflow code [struct2depth](https://github.com/tensorflow/models/tree/master/research/struct2depth). I have run their code both on a KITTI sequence and a random driving video from Youtube. To prepare the object instance labels, I used matterport's [Mask R-CNN implementation](https://github.com/matterport/Mask_RCNN). As preparing the data was a little tedious, I provide the jupyter lab files that I have used [here]().
 
 <img src="/images/paper_review1/melbourne.gif">
 
@@ -261,21 +260,9 @@ To sum up, I think this paper is a good attempt to alleviate the unrealistic sta
 
 <sub><sup>Here is a link for [presentation slides](https://drive.google.com/file/d/14oNrfLpiwHwWuJC5wNM-7XjZzmFoCYqM/view?usp=sharing) of this blog post.<sub><sup>
 
+[Burada yazilar var vs](#abcde)
 
 <p align="left" style="font-size:90%; font-weight:bold;">References</p>
-
-
-<a name="1"> [1] </a> V. Casser, S. Pirk, R. Mahjourian, and A. Angelova, “Depth Prediction without the Sensors: Leveraging Structure for Unsupervised Learning from Monocular Videos,” in Thirty-Third AAAI Conference on Artificial Intelligence (AAAI-19), 2019.  
-<a name="2"> [2] </a> A. Geiger, P. Lenz, C. Stiller, and R. Urtasun, "Vision meets Robotics: The KITTI Dataset", in International Journal of Robotics Research, 2013.  
-<a name="3"> [3] </a> T. Zhou, M. Brown, N. Snavely, and D. G. Lowe, “Unsupervised Learning of Depth and Ego-Motion from Video,” in CVPR, 2017.  
-<a name="4"> [4] </a> D. Eigen, C. Puhrsch, and R. Fergus, “Depth Map Prediction from a Single Image using a Multi-Scale Deep Network,” in Advances in Neural Information Processing Systems 27, Z. Ghahramani, M. Welling, C. Cortes, N. D. Lawrence, and K. Q. Weinberger, Eds. Curran Associates, Inc., 2014, pp. 2366–2374.  
-<a name="5"> [5] </a> I. Laina, C. Rupprecht, V. Belagiannis, F. Tombari, and N. Navab, “Deeper depth prediction with fully convolutional residual networks,” in 3D Vision (3DV), 2016 Fourth International Conference on, 2016, pp. 239–248.  
-<a name="6"> [6] </a> C. Godard, O. Mac Aodha, and G. J. Brostow, “Unsupervised Monocular Depth Estimation with Left-Right Consistency,” in CVPR, 2017.  
-<a name="7"> [7] </a> B. Ummenhofer et al., “DeMoN: Depth and Motion Network for Learning Monocular Stereo,” in IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017.  
-<a name="8"> [8] </a> H. Zhan, R. Garg, C. Saroj Weerasekera, K. Li, H. Agarwal, and I. Reid, “Unsupervised Learning of Monocular Depth Estimation and Visual Odometry With Deep Feature Reconstruction,” in The IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018.  
-<a name="9"> [9] </a> C. Luo et al., “Every Pixel Counts ++: Joint Learning of Geometry and Motion with 3D Holistic Understanding,” IEEE Transactions on Pattern Analysis and Machine Intelligence, pp. 1–1, 2019.  
-<a name="10"> [10] </a> Z. Yin and J. Shi, “GeoNet: Unsupervised Learning of Dense Depth, Optical Flow and Camera Pose,” in 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2018, pp. 1983–1992.  
-<a name="11"> [11] </a> Zhou Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, “Image quality assessment: from error visibility to structural similarity,” IEEE Transactions on Image Processing, vol. 13, no. 4, pp. 600–612, Apr. 2004.  
-<a name="12"> [12] </a> R. Garg, B. G. V. Kumar, G. Carneiro, and I. Reid, “Unsupervised CNN for single view depth estimation: Geometry to the rescue,” in European Conference on Computer Vision, 2016, pp. 740–756.  
+{% bibliography --file references%}
 
 
