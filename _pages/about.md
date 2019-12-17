@@ -15,3 +15,6 @@ On my free times, I enjoy solving algorithms problems, playing cello and having 
 During my bachelors I was in Bogazici University Computer Engineering, beautifully located in Istanbul Turkey. 
 
 Being a passionate learner and a keen music listener, I will be blogging on either technical stuff, research, ideas on anything, or on music. I will be majorly posting in English, sometimes in Turkish, and perhaps one day in German (which I am learning now).  
+
+
+_If you wish to **support me**, here is a list of books that I would be glad to have in my bookshelf:_ [Book List](https://www.amazon.de/hz/wishlist/ls/1XSZWWFOWGE6J?ref_=wl_share)
