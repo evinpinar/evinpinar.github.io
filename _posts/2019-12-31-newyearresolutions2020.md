@@ -11,15 +11,17 @@ Normally, I create different sections in my resolution list, such as physical he
 
 Education
 - Graduate from Master's degree
-- Apply to PhD positions until getting an acceptance!
-- Learn more on Reinforcement Learning (Coursera specialization)
+- Apply to PhD positions (ideally until getting an acceptance)!
+- Learn more on Reinforcement Learning and distributed ML (coursera)
+- Write paper-reviews on the new topics you have learned
 - CS concepts recap after masters graduation (undergrad & masters: algorithms, operating systems, databases, programming languages, architecture, ml, cv, nlp, signal processing)
 
 Career
 - Submit paper to a top conference (ECCV, Neurips, AAAI, IROS, ACL, EMNLP)
 - Publish paper in a conference (top conference, low conference, workshops, or even journal)
-- Participate in a Kaggle contest
+- Participate in a Kaggle contest (ideally with Nazif or Suzan)
 - Solve a LeetCode hard problem every Sunday
+- Become fully financially independent (job, phd, scholarship)!
 
 Musical
 - Finish up 100 days of cello challenge on Instagram
@@ -40,10 +42,11 @@ Books
 - At least 18 of them in English
 
 Language
-- Keep learning German (B1->B2)
-- Not forget Spanish (Duolingo)
+- Lerne weiter Deutsch. Die Sprache wird immer besser <3 (B1->B2)
+- No te olvides del español. Habrá un viaje a América del Sur en el futuro. (Duolingo, peliculas)
+- Keep learning русский alphabet for the транс сибирский trip.
 
-There are 16 items in the list + the private ones! In the end of the year, I will see how many of them are accomplished and analyse them one by one :) Some of them might have a major role in my life path. Yet, I believe all of them are more or less equally important to keep my overall mental&psychological health and happiness in balance. Also, the grade should have some easy points as well as the harder ones, right? 
+There are 20 items in the list + the private ones! In the end of the year, I will see how many of them are accomplished and analyse them one by one :) Some of them might have a major role in my life path. Yet, I believe all of them are more or less equally important to keep my overall mental&psychological health and happiness in balance. Also, the grade should have some easy points as well as the harder ones, right? 
 
 A note on why I do that: According to some psychological research, it is shown that putting countable goals increases the possibility of reaching to these goals (eg. using a fitbit to increase number of daily steps). Some suggest that sharing the goals publicy increase chances of success. And finally some also suggest that putting high goals is especially highly correlated with reachability.
 
