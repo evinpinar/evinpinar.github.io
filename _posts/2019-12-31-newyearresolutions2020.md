@@ -1,11 +1,11 @@
 ---
 layout: post
-title: New Year Resolutions 2020  
+title: New Year's Resolutions 2020  
 categories: [misc]
 comments: true
 ---
 
-As a tradition, I make a new year resolutions list every year and keep track of what I have accomplished that past year. This time, I have decided to share them here as I have my personal blogsite now. I will be keeping updates. Here is a nice photo from Munich Marienplatz during Christmas celebrations :) 
+As a tradition, I make a new year's resolutions list every year and keep track of what I have accomplished that past year. This time, I have decided to share them here as I have my personal blogsite now. I will be keeping updates. Here is a nice photo from Munich Marienplatz during Christmas celebrations :) 
 
 <img src="/images/munich.png" height="450">
 
