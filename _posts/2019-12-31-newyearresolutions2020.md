@@ -7,7 +7,7 @@ comments: true
 
 As a tradition, I make a new year resolutions list for every year and keep track of what I have accomplished that past year. This year, I have decided to share them here as I have my personal blogsite now. I will be keeping updates during the year. Here is a nice photo from Munich Marienplatz Christmas celebrations :) 
 
-<img src="/images/munich.png" height="300">
+<img src="/images/munich.png" height="450">
 
 Normally, I create different sections in my resolution list, such as physical health, psychological health, relationships, career, education, musical, and so on... Here, I will share the non-private ones :) 
 
@@ -54,7 +54,7 @@ There are 20 items in the list + the private ones! In the end of the year, I wil
 
 I come from a lazy country, where the individual development is not seen as a positive aspect, and hard-working people are recognized as asocial and weird types. A major reason behind that is the corrupted government and hopeless individuals who believe that success is not based on hard-work but purely on connections. But, as I have been living in Europe for last 2.5 years, I have seen that hard working is really rewarded here, and, as I expect, in all first world countries. Hence, to hard worker, I put slightly higher expectations in my 2020 resolution. Sharing this list publicly is also counted towards increasing the expectation, and it helps to increase the chances of success :)  
 
-<img src="/images/tum.png" height="300">
+<img src="/images/tum.png" height="500">
 
 
 
