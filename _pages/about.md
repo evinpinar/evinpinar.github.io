@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I am a CS PhD candidate at the Technical University of Munich, under Computer Aided Medical Procedures & Augmented Reality (CAMPAR) Chair, computer vision and Narvis labs. My interests are on computer vision, monocular depth prediction and 3D scene understanding. You can find my **[resume here](https://docs.google.com/gview?url=https://github.com/evinpinar/evinpinar.github.io/raw/master/Ornek_EvinPinar.pdf&embedded=true)**.
+I am a CS PhD candidate at the Technical University of Munich, under Computer Aided Medical Procedures & Augmented Reality (CAMPAR) Chair, computer vision and Narvis labs. My interests are on computer vision, monocular depth prediction and 3D scene understanding. You can find my **[resume here](https://docs.google.com/gview?url=https://github.com/evinpinar/evinpinar.github.io/raw/master/Ornek_EvinPinar.pdf&embedded=true)**, and my google scholar profile **[here](https://scholar.google.com/citations?user=OCAKQzcAAAAJ&hl=en)**.
 
 I'm also an amateur cellist, playing in [Junge Münchner Symphoniker](http://junge-muenchner-symphoniker.de). <br/>
 
