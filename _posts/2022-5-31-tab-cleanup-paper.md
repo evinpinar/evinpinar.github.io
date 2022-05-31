@@ -24,21 +24,21 @@ As mentioned above, NERF requires camera poses of images, which can be difficult
 
 <p align="left" style="font-size:110%; font-weight:bold;">3. <a href="https://arxiv.org/pdf/2203.04802v1.pdf">NeRF-Pose: A First-Reconstruct-Then-Regress Approach for Weakly-supervised 6D Object Pose Estimation</a></p>
 
-<img src="images/paper_stack/nerfpose.png" width="50%">
+<img src="/images/paper_stack/nerfpose.png" width="50%">
 
 6D object pose estimation often refers to task of detecting an object's 3D location and 3D orientation from a single image. NNs are usually trained by annotated sets of 3D object models and their poses. Yet, what happens when we don't have enough data? Also, CAD model may not be fitting perfectly on the image if it's a real one. This paper instead relies on 2D segmentation (instead of 3D model) and camera pose. It first builds an object-nerf from multiple views of an image, supervised by rendering both the image and mask. Then trains a single view pose estimation network supervised by object-nerf rendered mask and NOCS (Normalized Object Coordinate Space, a 3D map showing pixel coordinate wrt canonical object coordinates). Applying the mask on NOCS and Pnp+RANSAC, voila, the 6D object pose!  
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">4. <a href="https://arxiv.org/pdf/2205.10824.pdf">ReLU Fields: The Little Non-linearity That Could</a> (SIGGRAPH 2022)</p>
 
-<img src="https://geometry.cs.ucl.ac.uk/group_website/projects/2022/relu_fields/static/figures/concept.jpg" width="100%">
+<img src="https://geometry.cs.ucl.ac.uk/group_website/projects/2022/relu_fields/static/figures/concept.jpg" width="60%">
 
 This paper trains a NERF without neural MLP layers! They replace the MLP simply with a 3D RELU voxel grid (a 3D voxel of features whose vertice values are evaluated by a ReLU). It sounds very simplistic right? Then a question arises, what is a neural network, why is it strong, due to neural layers, or due to non-linear operations? Maybe structuring the input in a nice way (MLP, conv, transformers) helps the optimization, but in the end job is done by non-linearities (relu, sin, tanh)...  Mentioning that, it would be nice to see a SIRENized version of this work. 
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">5. <a href="https://arxiv.org/pdf/2204.06307.pdf">Multi-View Consistent Generative Adversarial Networks for 3D-aware Image Synthesis</a> (CVPR2022)</p>
 
-<img src="https://github.com/Xuanmeng-Zhang/MVCGAN/blob/main/docs/random_sample.png?raw=true" width="100%">
+<img src="https://github.com/Xuanmeng-Zhang/MVCGAN/blob/main/docs/random_sample.png?raw=true" width="70%">
 
 
 Continuing with the neural implicit fields, there is a line of research looking at stylistically aware 3D consistent shape generation (PiGAN, StyleSDF, StyleNerf), which enable extracting a mesh of a Style-GAN face. Problems are, PiGAN does not explicitly train with 3D constraints, ending up low-quality 3D mesh. Whereas StyleSDF and StyleNerf train only with an image-camera pose inputs, which are stronger than PiGAN. This work, on the other hand, trains the field with explicitly warping the images with known poses to introduce additional multiview photometric consistency. Noting that StyleSDF is also a CVPR paper, and I believe StyleNerf is not yet published, it will be interesting to see their comparison in the future. 
@@ -55,7 +55,7 @@ The previous paper focused on human and cat faces, now we are challenged with re
 
 <p align="left" style="font-size:110%; font-weight:bold;">7. <a href="https://www.artec3d.com/sharp2022#challenge-2">Sharp Edge Recovery Challenge</a>(CVPR 2022)</p>
 
-<img src="https://cvi2.uni.lu/wp-content/uploads/sites/97/2022/01/Challenge1_Track2-886x1024.png" width="50%">
+<img src="https://cvi2.uni.lu/wp-content/uploads/sites/97/2022/01/Challenge1_Track2-886x1024.png" width="30%">
 
 It's a CVPR2022 challenge with generous awards! There are two tasks: (1) reconstructing a full 3d textured mesh of a body or object from a partial scan (2) recognizing a 3d object scan and reconstructing in a parametric form with lines and edges (CAD).   
 
@@ -63,13 +63,13 @@ It's a CVPR2022 challenge with generous awards! There are two tasks: (1) reconst
 <p align="left" style="font-size:110%; font-weight:bold;">8. <a href="https://arxiv.org/pdf/2202.11948.pdf">Domain Disentangled Generative Adversarial Network for Zero-Shot Sketch-Based 3D Shape Retrieval</a></p>
 
 
-<img src="images/paper_stack/domaindis_zeroshot.png" width="100%">
+<img src="/images/paper_stack/domaindis_zeroshot.png" width="100%">
 
 The title already explaining the task, they train a model which takes a sketch and its 3D shape, which first disentangles domain specific and invariant features, where the invariant ones are aimed to embed in word space. Then at train time, they combine different domain specific features along with semantics, optimized with a reconstruction and a discrimination(real/fake) loss. Since generator is conditioned on domain invariant features along with semantics, when a novel shape sketch is given with its name, the model can generate a 3D shape. 
 
 <p align="left" style="font-size:110%; font-weight:bold;">9. <a href="https://arxiv.org/pdf/2109.07945.pdf">Lifting 2D Object Locations to 3D by Discounting LiDAR Outliers across Objects and Views</a></p>
 
-<img src="images/paper_stack/lifting2d3d.png" width="100%">
+<img src="/images/paper_stack/lifting2d3d.png" width="100%">
 
 This is a cool geometry paper, where the problem is getting 3D bounding boxes from image and LIDAR point cloud data. The problem with LIDAR is, there are many occlusions, and most methods aim to regress bounding box on the occluded car data. This paper solves it by assuming a 3D car shape prior, which is shared between all cars, and tries to fit the segmented car point cloud into the model. Segmentation is retrieved from Mask R-CNN, and getting the corresponding points by known camera parameters, learning an outlier detector to filter out background points (due to imperfect mask). Then the remaining points are fit to a mesh, and pose is regressed by the mesh bounding box coordinates. This is a cool idea, and one step further would be enabling learning different types of car models. 
 
@@ -90,7 +90,7 @@ Continuing with contrastive learning, this paper takes a detailed look in data t
 
 <p align="left" style="font-size:110%; font-weight:bold;">12. <a href="https://arxiv.org/pdf/2204.00598.pdf">Socratic Models: Composing Zero-Shot Multimodal Reasoning with Language</a></p>
 
-<img src="images/paper_stack/socraticm.png" width="100%">
+<img src="/images/paper_stack/socraticm.png" width="100%">
 
 The image-text models mentioned above use paired images on internet, yet the text only large-models often rely on additional external textual data, such as spreadsheets, code, novels etc. This paper looks on how to get the best of these models and combine them in zero-shot setting, asking the question "to what extend we can use lang or lang-text model on different multimodal tasks such as robot planning or audio". By using the already existing models, they introduce a new method, Socratic Model, to combine and connect modalities, which is based on function composition (in broad terms). For example, the sota image captioning functions VLM (visual language model) trained on an image, creates a capture. Socratic Model uses a LM to enhance the caption, which is then fed back to VLM to get the plausibility of the answer. In this way, their results show that LM's strength can be in use. Some other tasks they demonstrate: video-to-text retrieval through LM, VLM, ALM(+audio), egocentrict perception (+user modality), robot perception and planning (adding policy methods). The idea reminds me of ensemble models a bit, and multiview consistency checking, where the idea is confirming if different hypothesis match. Overall, it serves for general purpose AI understanding. 
 
@@ -105,7 +105,7 @@ Continuing the Habitat workshops, this one aims to couple the progress in comput
 <p align="left" style="font-size:110%; font-weight:bold;">14. <a href="https://www.amazon.science/blog/how-does-astro-localize-itself-in-an-ever-changing-home">How does Astro localize itself in an ever-changing home?</a></p>
 
 
-<img src="https://assets.amazon.science/dims4/default/e6720b5/2147483647/strip/true/crop/531x400+0+0/resize/1200x904!/format/webp/quality/90/?url=http%3A%2F%2Famazon-topics-brightspot.s3.amazonaws.com%2Fscience%2F4d%2Fa4%2F81d6532d48dcb609c2315b7fa405%2Fsocially-appropriate-distance.png" width="75%">
+<img src="https://assets.amazon.science/dims4/default/e6720b5/2147483647/strip/true/crop/531x400+0+0/resize/1200x904!/format/webp/quality/90/?url=http%3A%2F%2Famazon-topics-brightspot.s3.amazonaws.com%2Fscience%2F4d%2Fa4%2F81d6532d48dcb609c2315b7fa405%2Fsocially-appropriate-distance.png" width="50%">
 
 It is a new indoor house robot from Amazon, in production stage, comes with a screen, two tires and a small carriage area. It can navigate within the house with visual-SLAM, communicate to people and handle tasks, like security monitoring, delivering calls/reminders, playing shows. Another step closer to R2D2, or? :) Things are getting very exciting nowadays, and seeing the research getting into real-life and use is indeed motivating.
 
