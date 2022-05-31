@@ -16,7 +16,7 @@ In an attempt to make NERFs real-time renderable, this paper uses the idea of "b
 <p align="left" style="font-size:110%; font-weight:bold;">2. <a href="https://arxiv.org/pdf/2102.07064.pdf">NeRF−−: Neural Radiance Fields Without Known Camera Parameters</a></p>
 
 <video loop="" class="center_video" controls="" autoplay="" muted="">
-    <source src="https://nerfmm.active.vision/assets/comparisons/flower_colmap_learning_traj.mp4" type="video/mp4">
+    <source src="https://nerfmm.active.vision/assets/comparisons/flower_colmap_learning_traj.mp4" type="video/mp4" height="200">
   Your browser does not support the video tag. flower-COLMAP-ours-traj
   </video>
 
@@ -24,7 +24,7 @@ As mentioned above, NERF requires camera poses of images, which can be difficult
 
 <p align="left" style="font-size:110%; font-weight:bold;">3. <a href="https://arxiv.org/pdf/2203.04802v1.pdf">NeRF-Pose: A First-Reconstruct-Then-Regress Approach for Weakly-supervised 6D Object Pose Estimation</a></p>
 
-<img src="images/paper_review1/nerfpose.png" height="200">
+<img src="images/paperstack/nerfpose.png" height="200">
 
 6D object pose estimation often refers to task of detecting an object's 3D location and 3D orientation from a single image. NNs are usually trained by annotated sets of 3D object models and their poses. Yet, what happens when we don't have enough data? Also, CAD model may not be fitting perfectly on the image if it's a real one. This paper instead relies on 2D segmentation (instead of 3D model) and camera pose. It first builds an object-nerf from multiple views of an image, supervised by rendering both the image and mask. Then trains a single view pose estimation network supervised by object-nerf rendered mask and NOCS (Normalized Object Coordinate Space, a 3D map showing pixel coordinate wrt canonical object coordinates). Applying the mask on NOCS and Pnp+RANSAC, voila, the 6D object pose!  
 
@@ -38,14 +38,19 @@ This paper trains a NERF without neural MLP layers! They replace the MLP simply 
 
 <p align="left" style="font-size:110%; font-weight:bold;">5. <a href="https://arxiv.org/pdf/2204.06307.pdf">Multi-View Consistent Generative Adversarial Networks for 3D-aware Image Synthesis</a>(CVPR2022)</p>
 
-<img src="https://github.com/Xuanmeng-Zhang/MVCGAN/blob/main/docs/random_sample.png" height="200">
+<img src="https://github.com/Xuanmeng-Zhang/MVCGAN/blob/main/docs/random_sample.png?raw=true" height="200">
+
 
 Continuing with the neural implicit fields, there is a line of research looking at stylistically aware 3D consistent shape generation (PiGAN, StyleSDF, StyleNerf), which enable extracting a mesh of a Style-GAN face. Problems are, PiGAN does not explicitly train with 3D constraints, ending up low-quality 3D mesh. Whereas StyleSDF and StyleNerf train only with an image-camera pose inputs, which are stronger than PiGAN. This work, on the other hand, trains the field with explicitly warping the images with known poses to introduce additional multiview photometric consistency. Noting that StyleSDF is also a CVPR paper, and I believe StyleNerf is not yet published, it will be interesting to see their comparison in the future. 
 
 
 <p align="left" style="font-size:110%; font-weight:bold;">6. <a href="https://yccyenchicheng.github.io/AutoSDF/">AutoSDF: Shape Priors for 3D Completion, Reconstruction and Generation</a>(CVPR 2022)</p>
 
-<img src="https://yccyenchicheng.github.io/AutoSDF/gen3d_teaser_crop.mp4" height="200">
+<img src="" height="200">
+<video loop="" class="center_video" controls="" autoplay="" muted="">
+    <source src="https://yccyenchicheng.github.io/AutoSDF/gen3d_teaser_crop.mp4" type="video/mp4" width="100%">
+  Your browser does not support the video tag. flower-COLMAP-ours-traj
+  </video>
 
 The previous paper focused on human and cat faces, now we are challenged with real world objects, and the tasks can differ from single-view reconstruction, to shape completion and language-guided generation. This work proposes an object shape representation which is decoupled from the task, and can be used with a minimal conditioning supervision. The idea is first decomposing the object into small patches and learning a latent prior for each patch through VQ-VAE(Vector quantized variational autoencoder). To enable conditional generation, they use a Transformer based model which takes the latent priors and autoregressively predicts the joint shape distribution. When this model is trained for full 3D generation, one can give input the partial scan and complete it through the known priors. Otherwise, for language grounding, autoregressive model is biased by the word tokens to enable conditioned generation, so one can generate chair with round legs or a couch on wheels. I wonder how would zero-shot compositionality work in this scenario.
 
@@ -59,13 +64,20 @@ It's a CVPR2022 challenge with generous awards! There are two tasks: (1) reconst
 ### []()
 <p align="left" style="font-size:110%; font-weight:bold;">8. <a href="https://arxiv.org/pdf/2202.11948.pdf">Domain Disentangled Generative Adversarial Network for Zero-Shot Sketch-Based 3D Shape Retrieval</a></p>
 
+
+<img src="images/paperstack/domaindis_zeroshot.png" width="100%">
+
 The title already explaining the task, they train a model which takes a sketch and its 3D shape, which first disentangles domain specific and invariant features, where the invariant ones are aimed to embed in word space. Then at train time, they combine different domain specific features along with semantics, optimized with a reconstruction and a discrimination(real/fake) loss. Since generator is conditioned on domain invariant features along with semantics, when a novel shape sketch is given with its name, the model can generate a 3D shape. 
 
 <p align="left" style="font-size:110%; font-weight:bold;">9. <a href="https://arxiv.org/pdf/2109.07945.pdf">Lifting 2D Object Locations to 3D by Discounting LiDAR Outliers across Objects and Views</a></p>
 
+<img src="images/paperstack/lifting2d3d.png" width="100%">
+
 This is a cool geometry paper, where the problem is getting 3D bounding boxes from image and LIDAR point cloud data. The problem with LIDAR is, there are many occlusions, and most methods aim to regress bounding box on the occluded car data. This paper solves it by assuming a 3D car shape prior, which is shared between all cars, and tries to fit the segmented car point cloud into the model. Segmentation is retrieved from Mask R-CNN, and getting the corresponding points by known camera parameters, learning an outlier detector to filter out background points (due to imperfect mask). Then the remaining points are fit to a mesh, and pose is regressed by the mesh bounding box coordinates. This is a cool idea, and one step further would be enabling learning different types of car models. 
 
 <p align="left" style="font-size:110%; font-weight:bold;">10. <a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Hong_Deep_Matching_Prior_Test-Time_Optimization_for_Dense_Correspondence_ICCV_2021_paper.pdf">Deep Matching Prior: Test-Time Optimization for Dense Correspondence</a> (ICCV 2021)</p>
+
+<img src="https://github.com/SunghwanHong/Deep-Matching-Prior/blob/main/fig/overall.jpg?raw=true" width="100%">
 
 Dense correspondense aims to match the pixels within two given images (optical flow). There are two class of methods (1) optimization - such as variational methods, aims to maximize similarity in between matched results (2) deep learning - needs large data to train, annotation. This paper combines the two, where a network is optimized for a target-source image without annotation. The idea is based on using Imagenet-resnet features, and again maximizing the similarity (contrastive loss). There are some tricks like, searching on a neighborhood, pyramid formulation. They show applying augmentation (homography, affine, thin plate spline (TPS)) to the pair, as well as pre-training, improves performance. It is such a simple yet strong idea, and a well-written paper. I particularly enjoyed reading it!  
 
