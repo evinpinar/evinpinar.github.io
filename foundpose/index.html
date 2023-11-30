@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="FoundPose: Unseen Object Pose Estimation with Foundation Features">
+  <meta name="keywords" content="FoundPose, unseen pose">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoundPose: Unseen Object Pose Estimation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"><span class="foundpose">FoundPose</span>: Unseen Object Pose Estimation with Foundation Features</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://evinpinar.github.io">Evin Pınar Örnek</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://ylabbe.github.io">Yann Labbé</a><sup>3</sup>,</span>
+            <span class="author-block">
+              <a href="https://btekin.github.io">Buğra Tekin</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/lingnima/">Lingni Ma</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/cem-keskin-23692a15">Cem Keskin</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cforster.ch">Christian Forster</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://cmp.felk.cvut.cz/~hodanto2/">Tomáš Hodaň</a><sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Technical University of Munich</span>
+            <span class="author-block"><sup>2</sup>Munich Center for Machine Learning</span>
+            <span class="author-block"><sup>3</sup>Reality Labs at Meta</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/cccc.cccc"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/facebookresearch/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div style="text-align: center;">
+      <img src="./static/images/teaser_fig.png" alt="FoundPose" class="responsive-image" style="display: block; margin: auto; margin-bottom: 20px;">
+      </div>
+      <h2 class="subtitle has-text-centered">
+        Patch features from the DINOv2 foundation model (top) are the key enabler of <span class="foundpose">FoundPose</span>. 
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="image-container">
+        <img src="./static/images/hb_13_410_32_0_0.png" alt="HB">
+        <img src="./static/images/lmo_2_1123_9_0_0.png" alt="LMO">
+        <img src="./static/images/icbin_1_8_1_6_0.png" alt="IC-BIN">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose FoundPose, a method for 6D pose estimation of unseen rigid objects from a single RGB image. 
+          </p>
+          <p>
+            The method assumes that 3D models of the objects are available but does not require any object-specific training. This is achieved by building upon DINOv2, a recent vision foundation model with impressive generalization capabilities.
+            An online pose estimation stage is supported by a minimal object representation that is built during a short onboarding stage from DINOv2 patch features extracted from rendered object templates. Given a query image with an object segmentation mask, FoundPose first rapidly retrieves a handful of similarly looking templates by a DINOv2-based bag-of-words approach. Pose hypotheses are then generated from 2D-3D correspondences established by matching DINOv2 patch features between the query image and a retrieved template, and finally optimized by featuremetric refinement.
+          </p>
+          <p>
+            The method can handle diverse objects, including challenging ones with symmetries and without any texture, and noticeably outperforms existing RGB methods for coarse pose estimation in both accuracy and speed on the standard BOP benchmark. With the featuremetric and additional MegaPose refinement, which are demonstrated complementary, the method outperforms all RGB competitors.
+          </p>
+        </div>
+      </div>
+    </div>
+
+     <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method overview</h2>
+
+        <div style="text-align: center;">
+          <img src="./static/images/pipeline.pdf" alt="FoundPose" class="responsive-pipeline" style="display: block; margin: auto; margin-bottom: 20px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+      <h2 class="title is-3">Featuremetric refinement</h2>
+       <div class="columns is-centered">
+
+      <div class="column">
+        <div class="content">
+          <img src="./static/refinement/2_801_1_0_0_refinement_costs.gif" alt="LMO gif">
+        </div>
+      </div>
+
+
+      <!-- Visual Effects. 
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Visual Effects</h2>
+          <p>
+            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall.
+          </p>
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dollyzoom-stacked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      Visual Effects. -->
+
+      <!-- Matting. -->
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content">
+            <img src="./static/refinement/1_684_3_0_0_refinement_costs.gif" alt="LMO gif">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Why does FoundPose work?</h3>
+        <div class="content has-text-justified">
+          <p> Top three PCA components of patch descriptors extracted at different layers of <a href="https://arxiv.org/abs/2309.16588">DINOv2 ViT-L</a> from templates of a textured object from YCB-V and a symmetric and texture-less object from T-LESS. As observed by <a href="https://dino-vit-features.github.io">Amir et al.</a> and also clearly visible in these visuals, patch descriptors contain gradually less positional and more semantic information when going from shallower to deeper layers.
+        </p>
+        </div> 
+        <div style="text-align: center;">
+          <img src="./static/images/dino_pca.pdf" alt="pca" class="responsive-image" style="display: block; margin: auto; margin-bottom: 20px;">
+        </div>
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+
+    <!--/ Matting. -->
+
+  
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="image-container">
+        <img src="./static/images/tudl1_6925_1_0_0.png" alt="TUD-L">
+        <img src="./static/images/itodd_1_317_23_0_0.png" alt="ITODD">
+        <img src="./static/images/tless_14_427_23_1_0.png" alt="T-LESS">
+      </div>
+      
+      <!--
+      <div style="text-align: center;">
+      <img src="./static/images/hb_13_410_32_0_0.png" alt="HB" style="width:30%; style="display: block; margin: auto;">
+      </div>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{ornek2023foundpose,
+  author    = {{\"O}rnek, Evin P{\i}nar and Labb\'e, Yann and Tekin, Bugra and Ma, Lingni and Keskin, Cem and Forster, Christian and Hoda{\v{n}}, Tom{\'a}{\v{s}}},
+  title     = {FoundPose: Unseen Object Pose Estimation with Foundation Features}, 
+  journal   = {Arxiv},
+  year      = {2023},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
