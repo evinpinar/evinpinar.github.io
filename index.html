@@ -1,49 +1,357 @@
----
-layout: default
----
+<!DOCTYPE HTML>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Hi, Jon Here. Please DELETE the two <script> tags below if you use this HTML, otherwise my analytics will track your page -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+ 
+  <title>Evin Pınar Örnek</title>
+  
+  <meta name="author" content="Evin Pınar Örnek">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  <link rel="icon" type="image/png" href="images/seal_icon.png">
+</head>
 
-<div class="posts">
-  {% for post in paginator.posts %}
-    <article class="post">
+<body>
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+              <p style="text-align:center">
+                <name>Evin Pınar Örnek</name>
+              </p>
+              <p align="center">&nbsp;</p>
+              <p>I am PhD student at the Technical University of Munich, Chair of Computer Aided Medical Procedures and Augmented Reality, under the supervision of <a href="https://vision.ee.ethz.ch/people-details.OTAyMzM=.TGlzdC8zMjQ4LC0xOTcxNDY1MTc4.html">Federico Tombari</a> and <a href="https://vision.ee.ethz.ch/people-details.OTAyMzM=.TGlzdC8zMjQ4LC0xOTcxNDY1MTc4.html">Nassir Navab</a>. Before that, I have completed my master's degree at TU Munich and bachelor's at Bogazici University. My research focuses on 3D computer vision (scene understanding) and relevant applications such as in robotics and AR/VR.
+              </p> 
+              <p style="text-align:center">
+                <a href="mailto:evinpinarornek@google.com">Email</a> &nbsp/&nbsp
+                <a href="resume/evin_resume.pdf">CV</a> &nbsp/&nbsp
+                <a href="https://scholar.google.com/citations?user=OCAKQzcAAAAJ&hl=en">Google Scholar</a>
+                <a href="blog/index.html">Blog</a> &nbsp/&nbsp
+                <a href="https://www.cs.cit.tum.de/camp/members/evin-pinar-oernek/">Unipage</a>
+              </p>
+            </td>
+            <td style="padding:2.5%;width:33%;max-width:33%">
+              <a href="images/circle-cropped.png"><img style="width:100%;max-width:100%" alt="profile photo" src="images/circle-cropped.png" class="hoverZoomLink"></a>
+            </td>
+          </tr>
+        </tbody></table>
+        <p align="center">
+          <name align="center">Publications</name>
+        </p>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          
 
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/foundpose_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2311.18809" id="foundpose">
+                <papertitle>FoundPose: Unseen Object Pose Estimation with Foundation Features</papertitle>
+              </a>
+              <br>
+              <strong>Evin Pınar Örnek*</strong>, Yann Labbé, Bugra Tekin, Lingni Ma, Cem Keskin, Christian Forster, Tomas Hodan
+              <br>
+              <em>Arxiv</em>, 2023
+              <br>
+              <div class="paper" id="foundpose">
+                <a href="https://arxiv.org/abs/2311.18809">arxiv</a> /
+              </div>
+              <p></p>
+            </td>
+          </tr>
 
-      <div>
-        <p class="post_date">{{ post.date | date: "%B %e, %Y" }}</p>
-      </div>
 
-      <div class="entry">
-        {{ post.excerpt }}
-      </div>
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/commonscenes_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2305.16283" id="commonscenes">
+                <papertitle>CommonScenes: Generating Commonsense 3D Indoor Scenes with Scene Graphs</papertitle>
+              </a>
+              <br>
+              Guangyao Zhai*, <strong>Evin Pınar Örnek*</strong>, Shun-Cheng Wu, Yan Di, Federico Tombari, Nassir Navab, Benjamin Busam
+              <br>
+              *Equal contribution
+              <br>
+              <em>NeurIPS</em>, 2023
+              <br>
+              <div class="paper" id="commonscenes">
+                <a href="https://arxiv.org/abs/2305.16283">arxiv</a> /
+                <a href="https://sites.google.com/view/commonscenes">project page</a> /
+                <a href="https://github.com/ymxlzgy/commonscenes">code&data</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
 
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/supergbd_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2212.11922" id="supergbd">
+                <papertitle>SupeRGB-D: Zero-shot instance segmentation in cluttered indoor environments</papertitle>
+              </a>
+              <br>
+              <strong>Evin Pınar Örnek*</strong>, Aravindhan K Krishnan, Shreekant Gayaka, Cheng-Hao Kuo, Arnie Sen, Nassir Navab, Federico Tombari
+              <br>
+              <em>IEEE Robotics and Automation Letters</em>, 2023
+              <br>
+              <div class="paper" id="supergbd">
+                <a href="https://arxiv.org/abs/2212.11922">arxiv</a> /
+                <a href="https://github.com/evinpinar/supergb-d">code&data</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
 
-  <!-- pagination -->
-  {% if paginator.total_pages > 1 %}
-  <div class="pagination">
-    {% if paginator.previous_page %}
-      <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; Prev</a>
-    {% else %}
-      <span>&laquo; Prev</span>
-    {% endif %}
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/c3d.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/pdf/2111.14673.pdf" id="3dczsl">
+                <papertitle>3D Compositional Zero-shot Learning with DeCompositional Consensus</papertitle>
+              </a>
+              <br>
+              Muhammad Ferjad Naeem*, <strong>Evin Pınar Örnek*</strong>, Yongqin Xian, Luc Van Gool, Federico Tombari
+              <br>
+              *Equal contribution
+              <br>
+              <em>ECCV</em>, 2022
+              <br>
+              <div class="paper" id="pointrend">
+                <a href="https://arxiv.org/pdf/2111.14673.pdf">arxiv</a> /
+                <a href="https://github.com/ferjad/3DCZSL">code&data</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+    
 
-    {% for page in (1..paginator.total_pages) %}
-      {% if page == paginator.page %}
-        <span class="webjeda">{{ page }}</span>
-      {% elsif page == 1 %}
-        <a href="/">{{ page }}</a>
-      {% else %}
-        <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
-      {% endif %}
-    {% endfor %}
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/4dor_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2203.11937" id="4dor">
+                <papertitle>4D-OR: Semantic Scene Graphs for OR Domain Modeling</papertitle>
+              </a>
+              <br>
+              Ege Özsoy*, <strong>Evin Pınar Örnek*</strong>, Ulrich Eck, Tobias Czempiel, Federico Tombari, Nassir Navab
+              <br>
+              *Equal contribution
+              <br>
+              <em>Medical Image Computing and Computer Assisted Intervention</em>, Orals, 2022
+              <br>
+              <div class="paper" id="4dor">
+                <a href="https://arxiv.org/abs/2203.11937">arxiv</a> /
+                <a href="https://github.com/egeozsoy/4D-OR">code&data</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
 
-    {% if paginator.next_page %}
-      <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next &raquo;</a>
-    {% else %}
-      <span>Next &raquo;</span>
-    {% endif %}
-  </div>
-  {% endif %}
-</div>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/2d3d_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2203.08122" id="2d3d">
+                <papertitle>From 2d to 3d: Re-thinking benchmarking of monocular depth prediction</papertitle>
+              </a>
+              <br>
+              <strong>Evin Pınar Örnek*</strong>, Shristi Mudgal*, Johanna Wald, Yida Wang, Nassir Navab, Federico Tombari
+              <br>
+              *Equal contribution
+              <br>
+              <em>Arxiv</em>, 2022
+              <br>
+              <div class="paper" id="2d3d">
+                <a href="https://arxiv.org/abs/2203.08122">arxiv</a> /
+                <a href="https://github.com/evinpinar/monodepth_metrics">code</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/instconv_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2112.01521" id="instconv">
+                <papertitle>Object-Aware Monocular Depth Prediction with Instance Convolutions</papertitle>
+              </a>
+              <br>
+              Enis Simsar*, <strong>Evin Pınar Örnek*</strong>, Fabian Manhardt, Helisa Dhamo, Nassir Navab, Federico Tombari
+              <br>
+              *Equal contribution
+              <br>
+              <em>IEEE Robotics and Automation Letters</em>, 2022
+              <br>
+              <div class="paper" id="instcov">
+                <a href="https://arxiv.org/abs/2112.01521">arxiv</a> /
+                <a href="https://github.com/enisimsar/instance-conv">code</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/mssg_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2106.15309" id="mssg">
+                <papertitle>Multimodal semantic scene graphs for holistic modeling of surgical procedures</papertitle>
+              </a>
+              <br>
+              Ege Özsoy*, <strong>Evin Pınar Örnek*</strong>, Ulrich Eck, Federico Tombari, Nassir Navab
+              <br>
+              *Equal contribution
+              <br>
+              <em>Arxiv</em>, 2021
+              <br>
+              <div class="paper" id="mssg">
+                <a href="https://arxiv.org/abs/2106.15309">arxiv</a> /
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/coplanar_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2009.12662" id="coplanar">
+                <papertitle>Co-planar parametrization for stereo-SLAM and visual-inertial odometry</papertitle>
+              </a>
+              <br>
+              Xin Li, Yanyan Li, <strong>Evin Pınar Örnek</strong>, Jinlong Lin, Federico Tombari
+              <br>
+              <em>IEEE Robotics and Automation Letters</em>, 2021
+              <br>
+              <div class="paper" id="coplanar">
+                <a href="https://arxiv.org/abs/2009.12662">arxiv</a> / 
+                <a href="https://github.com/LiXin97/Co-Planar-Parametrization">code</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+          
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/thesis_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <papertitle>Rethinking Deep Learning Based Monocular Depth Prediction</papertitle>
+              </a>
+              <br>
+              <strong>Evin Pınar Örnek</strong>
+              <br>
+              <em>Master's Thesis</em>, TUM, 2020
+              <br>
+              <p></p>
+            </td>
+          </tr>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/verbsaction_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/2002.02265" id="verbsaction">
+                <papertitle>Verbs on Action: Zero-Shot Activity Recognition with Videos</papertitle>
+              </a>
+              <br>
+              <strong>Evin Pınar Örnek</strong>, Marie-Francine Moens
+              <br>
+              <em>CVPR Workshop posters</em>, 2020
+              <br>
+              <div class="paper" id="verbsaction">
+                <a href="https://arxiv.org/abs/2002.02265">arxiv</a> / 
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/unsup_endovo.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/1803.01047" id="unsup_endovo">
+                <papertitle>Unsupervised odometry and depth learning for endoscopic capsule robots</papertitle>
+              </a>
+              <br>
+              Mehmet Turan, <strong>Evin Pınar Örnek</strong>, Nail Ibrahimli, Can Giracoglu, Yasin Almalioglu, Mehmet Fatih Yanik, Metin Sitti
+              <br>
+              <em>IROS</em>, 2018
+              <br>
+              <div class="paper" id="unsup_endovo">
+                <a href="https://arxiv.org/abs/1803.01047">arxiv</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+          <!-- DATA ENTRY -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/magno_thumb.png" alt="PontTuset" width="160" height="130"  style="border-style: none">
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://arxiv.org/abs/1803.01048" id="coplanar">
+                <papertitle>Magnetic-visual sensor fusion-based dense 3d reconstruction and localization for endoscopic capsule robots</papertitle>
+              </a>
+              <br>
+              Mehmet Turan, Yasin Almalioglu, <strong>Evin Pınar Örnek</strong>, Helder Araujo, Mehmet Fatih Yanik, Metin Sitti
+              <br>
+              <em>IROS</em>, 2018
+              <br>
+              <div class="paper" id="coplanar">
+                <a href="https://arxiv.org/abs/1803.01048">arxiv</a>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+
+        </tbody></table>
+        <p align="center">&nbsp;</p>
+        <p align="center">&nbsp;</p>
+        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+          <tr>
+            <td>
+              <div style="clear:both;">
+                <p><font size="2">This website's template <a href="http://jonbarron.info">source code</a></font></p><br />
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
