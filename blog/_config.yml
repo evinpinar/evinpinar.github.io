@@ -45,8 +45,8 @@ google_analytics:
 
 # Your website URL (e.g. http://amitmerchant1990.github.io or http://www.amitmerchant.com)
 # Used for Sitemap.xml and your RSS feed
-url: http://evinpinar.github.io
-enforce_ssl: http://evinpinar.github.io
+url: http://evinpinar.github.io/blog
+enforce_ssl: http://evinpinar.github.io/blog
 production_url : http://evinpinar.github.io.com/blog
 BASE_PATH : http://evinpinar.com/blog
 
