@@ -255,3 +255,20 @@ h2.title.is-3 , h3.title.is-4{
     height: auto;
 }
 
+.has-margin-bottom {
+  margin-bottom: 20px;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.image-container img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px; 
+}
+

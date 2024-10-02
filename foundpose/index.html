@@ -92,6 +92,9 @@
               <span class="link-block">
                 <a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/03742.pdf"
                    class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                  <i class="fas fa-file-pdf"></i>
+                  </span>
                   <span>Publication</span>
                 </a>
               </span>
@@ -99,6 +102,9 @@
               <span class="link-block">
                 <a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/03742-supp.pdf"
                    class="external-link button is-normal is-rounded is-dark">
+                   <span class="icon">
+                    <i class="fas fa-file-alt"></i>
+                  </span>
                   <span>Supplementary</span>
                 </a>
               </span>
@@ -123,10 +129,12 @@
 
 
 <section class="hero teaser">
-  <div class="container is-max-desktop">
+  <div class="container">
     <div class="hero-body">
       <div style="text-align: center;">
-      <img src="./static/images/teaser_fig.png" alt="FoundPose" class="responsive-image" style="display: block; margin: auto; margin-bottom: 20px;">
+      <div class="image-container">
+      <img src="./static/images/teaser_fig.png" alt="FoundPose">
+    </div>
       </div>
       <h2 class="title"> Abstract</h2>
       <p>
@@ -134,7 +142,7 @@
         We demonstrate that such generalization capabilities can be observed in a recent vision foundation model trained in a self-supervised manner. Specifically, our method estimates the object pose from image-to-model 2D-3D correspondences, which are established by matching patch descriptors from the recent DINOv2 model between the image and pre-rendered object templates. We find that reliable correspondences can be established by kNN matching of patch descriptors from an intermediate DINOv2 layer. Such descriptors carry stronger positional information than descriptors from the last layer, and we show their importance when semantic information is ambiguous due to object symmetries or a lack of texture. To avoid establishing correspondences against all object templates, we develop an efficient template retrieval approach that integrates the patch descriptors into the bag-of-words representation and can promptly propose a handful of similarly looking templates. Additionally, we apply featuremetric alignment to compensate for discrepancies in the 2D-3D correspondences caused by coarse patch sampling. The resulting method noticeably outperforms existing RGB methods for refinement-free pose estimation on the standard BOP benchmark with seven diverse datasets and can be seamlessly combined with an existing render-and-compare refinement method to achieve RGB-only state-of-the-art results.
       </p> <br>
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{ornek2023foundpose,
+    <pre class="pre-wrap"><code>@article{ornek2023foundpose,
   author    = {{\"O}rnek, Evin P{\i}nar and Labb\'e, Yann and Tekin, Bugra and Ma, Lingni and Keskin, Cem and Forster, Christian and Hoda{\v{n}}, Tom{\'a}{\v{s}}},
   title     = {FoundPose: Unseen Object Pose Estimation with Foundation Features}, 
   journal   = {ECCV},
